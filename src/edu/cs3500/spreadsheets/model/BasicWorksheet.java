@@ -3,24 +3,39 @@ package edu.cs3500.spreadsheets.model;
 import edu.cs3500.spreadsheets.model.WorksheetReader.WorksheetBuilder;
 import edu.cs3500.spreadsheets.sexp.Parser;
 import edu.cs3500.spreadsheets.sexp.Sexp;
-import java.util.ArrayList;
 
-public class BasicWorksheet implements Spreadsheet {
 
-  private ArrayList<ArrayList<Cell>> currSpreadSheet;
+public class BasicWorkSheet implements Spreadsheet {
 
-  public BasicWorksheet(ArrayList<ArrayList<Cell>>  currSpreadSheet){
-    this.currSpreadSheet = currSpreadSheet;
+  final int height;
+  final int width;
+  private final Cell[][] currSpreadSheet;
+
+  public BasicWorkSheet(int height, int width, Cell[][] worksheet) {
+    this.height = height;
+    this.width = width;
+    currSpreadSheet = worksheet;
   }
+
+  public int getHeight(){
+    return this.height;
+  }
+
+  public int getWidth(){
+    return this.width;
+  }
+
   public static Builder defaultBuilder() {
     return new Builder();
   }
 
-
   @Override
-  public Cell getCellAt(Coord coord)
-  {
-     return currSpreadSheet.get(coord.col-1).get(coord.row -1);
+  public Cell getCellAt(int x, int y) {
+    return currSpreadSheet[x-1][y-1];
+  }
+
+  public Cell getCellAt(Coord coord) {
+    return null;
   }
 
 
@@ -29,27 +44,26 @@ public class BasicWorksheet implements Spreadsheet {
     //set to zero to test empty worksheet
     private int height = 0;
     private int width = 0;
-    private ArrayList<ArrayList<Cell>> currSpreadSheet = new ArrayList<>();
+    private Cell[][] currSpreadSheet = new Cell[height][width];
 
-
-    /*public Builder setHeight(int height) {
+    public Builder setHeight(int height) {
       if (height < 0) {
         throw new IllegalArgumentException("Height cannot be negative");
       }
       this.height = height;
       return this;
-    }*/
+    }
 
-    /*public Builder setWidth(int width) {
+    public Builder setWidth(int width) {
       if (height < 0) {
         throw new IllegalArgumentException("Height cannot be negative");
       }
       this.width = width;
       return this;
-    }*/
+    }
 
     public Builder setGrid() {
-      currSpreadSheet = new ArrayList<>();
+      currSpreadSheet = new Cell[width][height];
       return this;
     }
 
@@ -59,30 +73,47 @@ public class BasicWorksheet implements Spreadsheet {
 
       if (contents.charAt(0) == '=') {
         Sexp sexp = Parser.parse(contents.substring(1));
-        Cell cell = new Cell(coord, sexp.accept(new SexpToFormula()));
-        currSpreadSheet.get(col -1).add(row-1, cell);
+        Cell cell = new Cell(coord, sexp.toString());
+        cell.setSexp(sexp);
+        currSpreadSheet[col - 1][row - 1] = cell;
         return this;
       } else {
-        Cell cell = new Cell(coord, Parser.parse(contents).accept(new SexpToFormula()));
-        return this;
+        try {
+          Cell cell = new Cell(coord, contents);
+          currSpreadSheet[col - 1][row - 1] = cell;
+          cell.setBoolean(Boolean.valueOf(contents));
+          return this;
+        } catch (NullPointerException e) {
+          try {
+            Cell cell = new Cell(coord, contents);
+            currSpreadSheet[col - 1][row - 1] = cell;
+            cell.setDouble(Double.valueOf(contents));
+            return this;
+          } catch (NullPointerException ee) {
+            Cell cell = new Cell(coord, contents);
+            currSpreadSheet[col - 1][row - 1] = cell;
+            cell.setString(contents);
+            return this;
+          }
+        }
       }
     }
 
     public Builder blankCell(int col, int row) {
       Coord coord = new Coord(col, row);
       Cell cell = new Cell(coord);
-      currSpreadSheet.get(col -1).add(row -1, cell);
+      currSpreadSheet[col-1][row-1] = cell;
       return this;
     }
 
-
     @Override
-    public BasicWorksheet createWorksheet() {
-      if (currSpreadSheet.size() == 0 || currSpreadSheet.get(0).size() == 0) {
+    public BasicWorkSheet createWorksheet() {
+      if (this.height < 0 || this.width < 0) {
         throw new IllegalArgumentException("Null width or height");
       }
-      return new BasicWorksheet(currSpreadSheet);
+      return new BasicWorkSheet(height, width, currSpreadSheet);
     }
 
   }
+
 }

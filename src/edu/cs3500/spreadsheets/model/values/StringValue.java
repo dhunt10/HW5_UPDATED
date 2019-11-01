@@ -1,5 +1,6 @@
 package edu.cs3500.spreadsheets.model.values;
 
+import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.values.Value;
 import java.util.Objects;
 
@@ -32,7 +33,7 @@ public class StringValue implements Value {
     return this.string;
   }
 
-
+  @Override
   public void setValue(String string) {
     this.string = string;
   }
@@ -41,4 +42,5 @@ public class StringValue implements Value {
   public int hashCode() {
     return Objects.hash(string);
   }
+
 }

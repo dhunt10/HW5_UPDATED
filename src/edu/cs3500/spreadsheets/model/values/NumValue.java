@@ -1,6 +1,5 @@
 package edu.cs3500.spreadsheets.model.values;
 
-import edu.cs3500.spreadsheets.model.values.Value;
 import java.util.Objects;
 
 public class NumValue implements Value {
@@ -40,5 +39,10 @@ public class NumValue implements Value {
   @Override
   public int hashCode() {
     return Objects.hash(number);
+  }
+
+  @Override
+  public void setValue(String value) {
+
   }
 }

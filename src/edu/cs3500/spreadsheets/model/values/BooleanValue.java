@@ -34,8 +34,9 @@ public class BooleanValue implements Value {
   }
 
 
-  public void setValue(boolean bool) {
-      this.bool = bool;
+  @Override
+  public void setValue(String bool) {
+      this.bool = Boolean.parseBoolean(bool);
   }
 
   @Override

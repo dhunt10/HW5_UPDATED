@@ -1,4 +1,4 @@
-import edu.cs3500.spreadsheets.model.BasicWorksheet;
+import edu.cs3500.spreadsheets.model.BasicWorkSheet;
 import edu.cs3500.spreadsheets.model.Spreadsheet;
 import org.junit.Test;
 
