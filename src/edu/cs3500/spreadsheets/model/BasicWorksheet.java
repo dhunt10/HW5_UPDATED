@@ -29,8 +29,8 @@ public class BasicWorksheet implements Spreadsheet {
   public static final class Builder implements WorksheetBuilder<Spreadsheet> {
 
     //set to zero to test empty worksheet
-    private int height = 0;
-    private int width = 0;
+    private int height = 26;
+    private int width = 26;
     private ArrayList<ArrayList<Cell>> currSpreadSheet = new ArrayList<>();
 
 

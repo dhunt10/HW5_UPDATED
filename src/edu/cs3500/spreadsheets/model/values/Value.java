@@ -4,5 +4,4 @@ import edu.cs3500.spreadsheets.model.Formula;
 
 public interface Value extends Formula {
   void setValue(String value);
-
 }

@@ -3,10 +3,18 @@ package edu.cs3500.spreadsheets.model.values;
 import edu.cs3500.spreadsheets.model.values.Value;
 import java.util.Objects;
 
+/**
+ * Class defines what it is to be a boolean value within a cell.
+ */
 public class BooleanValue implements Value {
 
   private boolean bool;
 
+
+  /**
+   * Constructor. takes in a boolean and saves it.
+   * @param bool boolean to be saved as this.boolean.
+   */
   public BooleanValue(boolean bool){
     this.bool = bool;
   }
@@ -29,6 +37,10 @@ public class BooleanValue implements Value {
   }
 
 
+  /**
+   * Standard get function.
+   * @return the value of the boolean.
+   */
   public boolean getValue() {
     return this.bool;
   }

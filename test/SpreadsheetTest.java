@@ -15,6 +15,8 @@ public class SpreadsheetTest {
 
   @Test
   public void addCells(){
+    Spreadsheet s = BasicWorksheet.defaultBuilder().createWorksheet();
+    Spreadsheet a = BasicWorksheet.defaultBuilder().createCell(1,1,"Hello").Build;
 
   }
 }

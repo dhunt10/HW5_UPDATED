@@ -1,12 +1,17 @@
 package edu.cs3500.spreadsheets.model.values;
 
-import edu.cs3500.spreadsheets.model.Coord;
-import edu.cs3500.spreadsheets.model.values.Value;
 import java.util.Objects;
 
+/**
+ * Class defines what it is to be a string within a cell.
+ */
 public class StringValue implements Value {
   private String string;
 
+  /**
+   * Constructor. Takes in a string value and saves it.
+   * @param string string to be saved as this.string.
+   */
   public StringValue(String string){
     this.string = string;
   }
@@ -29,6 +34,10 @@ public class StringValue implements Value {
     return value.string.equals(string);
   }
 
+  /**
+   * Standard get function.
+   * @return the value of the boolean.
+   */
   public String getValue() {
     return this.string;
   }
