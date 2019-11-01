@@ -1,7 +1,9 @@
-package edu.cs3500.spreadsheets.model.values;
+package edu.cs3500.spreadsheets.model;
 
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.Formula;
+import edu.cs3500.spreadsheets.model.values.StringValue;
+import edu.cs3500.spreadsheets.model.values.Value;
 
 public class Cell {
 
@@ -12,6 +14,10 @@ public class Cell {
   public Cell(Coord coords, Formula contents){
     this.coords = coords;
     this.contents = contents;
+  }
+  public Cell(Coord coords){
+    this.coords = coords;
+    this.contents = new StringValue("");
   }
 
   public Value getEvaluated(Coord coord){
