@@ -2,22 +2,29 @@ package edu.cs3500.spreadsheets.model.values;
 
 import java.util.Objects;
 
+/**
+ * Class defines what it is to be of number value within a cell.
+ */
 public class NumValue implements Value {
 
   private double number;
 
-  public NumValue(double number){
+  /**
+   * Constructor. Takes in a number value and saves it.
+   * @param number number to be saved as this.number.
+   */
+  public NumValue(double number) {
     this.number = number;
   }
 
   @Override
-  public String toString(){
-     return String.valueOf(number);
+  public String toString() {
+    return String.valueOf(number);
   }
 
 
   @Override
-  public boolean equals(Object o){
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
@@ -28,22 +35,25 @@ public class NumValue implements Value {
     return Double.compare(value.number, number) == 0;
   }
 
+  /**
+   * Standard get function.
+   * @return the value of the number.
+   */
   public double getValue() {
     return this.number;
   }
-  
-  public void setValue(double number) {
-      this.number = number;
+
+  /**
+   * Setter to set the value.
+   * @param number number to be set.
+   */
+  public void setValue(Object number) {
+    this.number = Double.parseDouble(number.toString());
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(number);
-  }
-
-  @Override
-  public void setValue(String value) {
-
   }
 }
 

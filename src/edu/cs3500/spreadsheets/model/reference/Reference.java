@@ -2,16 +2,25 @@ package edu.cs3500.spreadsheets.model.reference;
 
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.Formula;
-import edu.cs3500.spreadsheets.model.values.BooleanValue;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Reference is a type that references any cell.
+ * A reference can be a reference to single cell or a black of cells.
+ */
 public class Reference implements Formula {
 
   List<String> refs;
   String references;
   List<Coord> evaluatedRefs;
 
+  /**
+   * Contructor. takes in a string that should be formatted as ["Cell1:Cell2"] or ["Cell1].
+   * The constructor takes in a string, calls a function to make a list of the cells.
+   * being references and then calls an additional function to return a list of coordinates.
+   * @param references a string formatted as such: ["Cell1:Cell2"] or ["Cell1].
+   */
   public Reference(String references) {
     this.references = references;
     String[] splitter = references.split(":");
@@ -26,6 +35,12 @@ public class Reference implements Formula {
     this.evaluatedRefs = getRefs();
   }
 
+  /**
+   * Makes a list of single reference cell.
+   * Polymorphic design allows for just one cell.
+   * @param firstBound the single cell to be parsed through.
+   * @return returns a list of 1 single reference cell.
+   */
   public List<String> referenceListMaker(String firstBound) {
 
     List<String> bounds = new ArrayList<>();
@@ -38,6 +53,12 @@ public class Reference implements Formula {
     return bounds;
   }
 
+  /**
+   * Makes a list of all the cells within a given range.
+   * @param firstBound range is defined with firstBound as the start.
+   * @param secondBound range is defined with second bound as the start.
+   * @return a list of strings that hold all the points being referenced.
+   */
   public List<String> referenceListMaker(String firstBound, String secondBound) {
     List<String> bounds = new ArrayList<>();
 
@@ -77,6 +98,10 @@ public class Reference implements Formula {
     return bounds;
   }
 
+  /**
+   * converts the strings made in referenceListMaker to coordinates.
+   * @return a list of coordinates being referenced.
+   */
   public List<Coord> getRefs() {
     List<Coord> references = null;
     for (int i = 0; i < this.refs.size(); i ++) {
@@ -86,26 +111,6 @@ public class Reference implements Formula {
       references.add(coord);
     }
     return references;
-  }
-
-  @Override
-  public boolean equals(Object o){
-
-    if (this == o) {
-      return true;
-    }
-
-    if (!(o instanceof Reference)) {
-      return false;
-    }
-
-    Reference ref = (Reference) o;
-    if (ref == this) {
-      return true;
-    }
-    else {
-      return false;
-    }
   }
 
 }
