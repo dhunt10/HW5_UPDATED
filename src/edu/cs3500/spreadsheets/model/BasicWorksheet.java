@@ -5,10 +5,12 @@ import edu.cs3500.spreadsheets.model.reference.Reference;
 
 import edu.cs3500.spreadsheets.model.values.Value;
 import edu.cs3500.spreadsheets.sexp.Parser;
+import edu.cs3500.spreadsheets.sexp.SList;
 import edu.cs3500.spreadsheets.sexp.Sexp;
 import java.sql.Ref;
 import java.text.Normalizer.Form;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is a worksheet representation that has the basic needs that were
@@ -48,15 +50,50 @@ public class BasicWorksheet implements Spreadsheet {
   }
 
   public Value getEvaluatedCellAt(Coord coord) {
+    Value value;
     Sexp sexp = Parser.parse(currSpreadSheet.get(coord.col - 1).
         get(coord.row - 1).getContents().toString());
 
     try {
-      sexp.accept(new SexpToFormula());
+      Object deliverable = sexp.accept(new SexpToFormula());
+      if (deliverable instanceof SList) {
+        value = operatorDec(deliverable.toList());
+      }
     }
     catch (IllegalArgumentException e) {
 
     }
+
+    return value;
+  }
+
+  public Value operatorDec(List<Object> list) {
+
+
+    switch () {
+
+      case "SUM":
+
+        break;
+
+      case "PROD":
+
+        break;
+
+      case "<":
+
+        break;
+
+      case "COMB":
+
+        break;
+
+      default:
+
+
+        break;
+    }
+
   }
 
 
@@ -127,7 +164,7 @@ public class BasicWorksheet implements Spreadsheet {
       try {
         Value valueTest = (Value) sexp;
         Cell cell = new Cell(coord, Parser.parse(contents).accept(new SexpToFormula()));
-        cell.setEvaluatedData(getEvaluatedCellAt(getCellAt(coord.col, coord.row));
+        cell.setEvaluatedData(getEvaluatedCellAt(getCellAt(coord.col, coord.row)));
         return this;
       }
       catch (IllegalArgumentException e) {
