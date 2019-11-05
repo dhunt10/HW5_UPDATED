@@ -15,17 +15,17 @@ public class BooleanValue implements Value {
    * Constructor. takes in a boolean and saves it.
    * @param bool boolean to be saved as this.boolean.
    */
-  public BooleanValue(boolean bool){
+  public BooleanValue(boolean bool) {
     this.bool = bool;
   }
 
   @Override
-  public String toString(){
+  public String toString() {
     return String.valueOf(bool);
   }
 
   @Override
-  public boolean equals(Object o){
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
@@ -33,7 +33,7 @@ public class BooleanValue implements Value {
       return false;
     }
     BooleanValue value = (BooleanValue) o;
-    return Boolean.compare(value.bool, bool)==0;
+    return Boolean.compare(value.bool, bool) == 0;
   }
 
 
@@ -47,15 +47,14 @@ public class BooleanValue implements Value {
 
 
   @Override
-  public void setValue(String bool) {
-      this.bool = Boolean.parseBoolean(bool);
-  }
-
-  @Override
   public int hashCode() {
     return Objects.hash(bool);
   }
 
 
+  @Override
+  public void setValue(Object value) {
+
+  }
 }
 

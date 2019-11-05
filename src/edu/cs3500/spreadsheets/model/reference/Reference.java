@@ -2,7 +2,6 @@ package edu.cs3500.spreadsheets.model.reference;
 
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.Formula;
-import edu.cs3500.spreadsheets.model.values.BooleanValue;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -112,26 +111,6 @@ public class Reference implements Formula {
       references.add(coord);
     }
     return references;
-  }
-
-  @Override
-  public boolean equals(Object o){
-
-    if (this == o) {
-      return true;
-    }
-
-    if (!(o instanceof Reference)) {
-      return false;
-    }
-
-    Reference ref = (Reference) o;
-    if (ref == this) {
-      return true;
-    }
-    else {
-      return false;
-    }
   }
 
 }

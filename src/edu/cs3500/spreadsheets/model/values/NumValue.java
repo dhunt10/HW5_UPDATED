@@ -13,18 +13,18 @@ public class NumValue implements Value {
    * Constructor. Takes in a number value and saves it.
    * @param number number to be saved as this.number.
    */
-  public NumValue(double number){
+  public NumValue(double number) {
     this.number = number;
   }
 
   @Override
-  public String toString(){
-     return String.valueOf(number);
+  public String toString() {
+    return String.valueOf(number);
   }
 
 
   @Override
-  public boolean equals(Object o){
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
@@ -45,20 +45,15 @@ public class NumValue implements Value {
 
   /**
    * Setter to set the value.
-   * @param number
+   * @param number number to be set.
    */
-  public void setValue(double number) {
-      this.number = number;
+  public void setValue(Object number) {
+    this.number = Double.parseDouble(number.toString());
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(number);
-  }
-
-  @Override
-  public void setValue(String value) {
-
   }
 }
 

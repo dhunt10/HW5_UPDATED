@@ -1,11 +1,10 @@
 package edu.cs3500.spreadsheets.model;
 
-import edu.cs3500.spreadsheets.model.Coord;
-import edu.cs3500.spreadsheets.model.Formula;
 import edu.cs3500.spreadsheets.model.reference.Reference;
 import edu.cs3500.spreadsheets.model.values.StringValue;
 import edu.cs3500.spreadsheets.model.values.Value;
-import java.util.List;
+import edu.cs3500.spreadsheets.sexp.SList;
+
 
 /**
  * Defines what a cell is and how it is defined.
@@ -36,38 +35,8 @@ public class Cell {
   }
 
   /**
-   * Evaluates the cell depending on what kind of formula is encased to it.
-   * @param coord the coordinates of the cell you wish to evaluate.
-   * @return returns the final value of the cell (Can be number, string or boolean)
-   */
-  public Value getEvaluated(Coord coord) {
-    try {
-      Reference ref = (Reference) contents;
-      contents = ref;
-    }
-    catch (IllegalArgumentException e) {
-
-    }
-    try {
-      Value value = (Value) contents;
-      contents = value;
-    }
-    catch (IllegalArgumentException e) {
-
-    }
-    try {
-      Function func = (Function) contents;
-      contents = func;
-    }
-    catch (IllegalArgumentException e) {
-
-    }
-    return evaluatedData;
-  }
-
-  /**
-   * Returns the contents of the cell.
-   * @return contents of the cell.
+   * Returns the raw contents of the cell.
+   * @return raw contents of the cell.
    */
   public Formula getContents() {
     return this.contents;
@@ -79,6 +48,14 @@ public class Cell {
    */
   public void setContents(Formula contents) {
     this.contents = contents;
+  }
+
+  /**
+   * Gets data that has been evaluated.
+   * @return data that has been evaluated.
+   */
+  public String getEvaluatedData() {
+    return this.evaluatedData.toString();
   }
 
 }

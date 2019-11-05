@@ -12,18 +12,18 @@ public class StringValue implements Value {
    * Constructor. Takes in a string value and saves it.
    * @param string string to be saved as this.string.
    */
-  public StringValue(String string){
+  public StringValue(String string) {
     this.string = string;
   }
 
   @Override
-  public String toString(){
+  public String toString() {
     return String.valueOf(string);
   }
 
 
   @Override
-  public boolean equals(Object o){
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
@@ -43,12 +43,12 @@ public class StringValue implements Value {
   }
 
   @Override
-  public void setValue(String string) {
-    this.string = string;
+  public void setValue(Object string) {
+    this.string = string.toString();
   }
 
   @Override
-  public int hashCode() {
+  public int hashCode()  {
     return Objects.hash(string);
   }
   

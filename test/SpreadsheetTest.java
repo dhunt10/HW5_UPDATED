@@ -1,22 +1,30 @@
+import static junit.framework.TestCase.assertEquals;
+
 import edu.cs3500.spreadsheets.model.BasicWorksheet;
+import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.Spreadsheet;
 import org.junit.Test;
 
+/**
+ * test functionality of spreadsheet.
+ */
 public class SpreadsheetTest {
 
 
   @Test
-  public void testEmptySheet(){
+  public void testEmptySheet() {
 
     Spreadsheet s = BasicWorksheet.defaultBuilder().createWorksheet();
-    assertEquals(0, s.ge);
-    assertEquals(0, s.getHeight());
+    assertEquals(true, s == null);
+
   }
 
   @Test
-  public void addCells(){
+  public void addCells() {
     Spreadsheet s = BasicWorksheet.defaultBuilder().createWorksheet();
-    Spreadsheet a = BasicWorksheet.defaultBuilder().createCell(1,1,"Hello").Build;
-
+    Spreadsheet a
+        = BasicWorksheet.defaultBuilder().createCell(1,1,"He").createWorksheet();
+    Coord coord = new Coord(1,1);
+    assertEquals(s.getCellAt(coord).getContents().toString(), "He");
   }
 }

@@ -2,9 +2,10 @@ package edu.cs3500.spreadsheets.model;
 
 import edu.cs3500.spreadsheets.model.WorksheetReader.WorksheetBuilder;
 import edu.cs3500.spreadsheets.model.reference.Reference;
-import edu.cs3500.spreadsheets.model.values.Value;
+
 import edu.cs3500.spreadsheets.sexp.Parser;
 import edu.cs3500.spreadsheets.sexp.Sexp;
+import edu.cs3500.spreadsheets.sexp.SexpVisitor;
 import java.util.ArrayList;
 
 /**
@@ -18,9 +19,9 @@ public class BasicWorksheet implements Spreadsheet {
 
   /**
    * This build the worksheet with given list of cells.
-   * @param currSpreadSheet
+   * @param currSpreadSheet array list of array list holding the cells
    */
-  public BasicWorksheet(ArrayList<ArrayList<Cell>>  currSpreadSheet){
+  public BasicWorksheet(ArrayList<ArrayList<Cell>>  currSpreadSheet) {
     this.currSpreadSheet = currSpreadSheet;
   }
 
@@ -40,9 +41,20 @@ public class BasicWorksheet implements Spreadsheet {
    * @return the cell at the given coordinates.
    */
   @Override
-  public Cell getCellAt(Coord coord)
-  {
-     return currSpreadSheet.get(coord.col-1).get(coord.row -1);
+  public Cell getCellAt(Coord coord) {
+    return currSpreadSheet.get(coord.col - 1).get(coord.row - 1);
+  }
+
+  public Cell getEvaluatedCellAt(Coord coord) {
+    Sexp sexp = Parser.parse(currSpreadSheet.get(coord.col - 1).
+        get(coord.row - 1).getContents().toString());
+
+    try {
+      sexp.accept(new SexpToFormula());
+    }
+    catch (IllegalArgumentException e) {
+
+    }
   }
 
 
@@ -60,11 +72,11 @@ public class BasicWorksheet implements Spreadsheet {
     /**
      *This was meant for us to set the size of the list, still trying to figure out if needed and
      * this is left so we can try and implement a set height and width of a spreadsheet.
-     * @param height
+     * @param height height.
      * @return a Builde.
      */
     public Builder setHeight(int height) {
-      if (height < 0) {
+      if (height < 0 || height > 999) {
         throw new IllegalArgumentException("Height cannot be negative");
       }
       this.height = height;
@@ -74,11 +86,11 @@ public class BasicWorksheet implements Spreadsheet {
     /**
      *This was meant for us to set the size of the list, still trying to figure out if needed and
      * this is left so we can try and implement a set height and width of a spreadsheet.
-     * @param width
+     * @param width width.
      * @return a Builder
      */
     public Builder setWidth(int width) {
-      if (height < 0) {
+      if (width < 0 || width > 999) {
         throw new IllegalArgumentException("Height cannot be negative");
       }
       this.width = width;
@@ -115,30 +127,33 @@ public class BasicWorksheet implements Spreadsheet {
           Reference ref = new Reference(sexp.toString());
           Cell cell = new Cell(coord, ref);
           currSpreadSheet.get(col - 1).add(row - 1, cell);
+          cell.setContents(cell.getEvaluated(coord));
           return this;
 
         } else {
           Sexp sexp = Parser.parse(contents.substring(1));
           Cell cell = new Cell(coord, sexp.accept(new SexpToFormula()));
           currSpreadSheet.get(col - 1).add(row - 1, cell);
+          cell.setContents(cell.getEvaluated(coord));
           return this;
         }
       } else {
         Cell cell = new Cell(coord, Parser.parse(contents).accept(new SexpToFormula()));
+        cell.setContents(cell.getEvaluated(coord));
         return this;
       }
     }
 
     /**
      * This creates a builder of a blank cell as a redundancy of the blank cell constructor.
-     * @param col
-     * @param row
+     * @param col column.
+     * @param row row.
      * @return a Builder
      */
     public Builder blankCell(int col, int row) {
       Coord coord = new Coord(col, row);
       Cell cell = new Cell(coord);
-      currSpreadSheet.get(col -1).add(row -1, cell);
+      currSpreadSheet.get(col - 1).add(row - 1, cell);
       return this;
     }
 
