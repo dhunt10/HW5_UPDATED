@@ -58,5 +58,9 @@ public class Cell {
     return this.evaluatedData.toString();
   }
 
+  public void setEvaluatedData(Value value) {
+    this.evaluatedData = value;
+  }
+
 }
 

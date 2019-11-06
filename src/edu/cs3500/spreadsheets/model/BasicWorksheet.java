@@ -3,10 +3,14 @@ package edu.cs3500.spreadsheets.model;
 import edu.cs3500.spreadsheets.model.WorksheetReader.WorksheetBuilder;
 import edu.cs3500.spreadsheets.model.reference.Reference;
 
+import edu.cs3500.spreadsheets.model.values.Value;
 import edu.cs3500.spreadsheets.sexp.Parser;
+import edu.cs3500.spreadsheets.sexp.SList;
 import edu.cs3500.spreadsheets.sexp.Sexp;
-import edu.cs3500.spreadsheets.sexp.SexpVisitor;
+import java.sql.Ref;
+import java.text.Normalizer.Form;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is a worksheet representation that has the basic needs that were
@@ -45,18 +49,80 @@ public class BasicWorksheet implements Spreadsheet {
     return currSpreadSheet.get(coord.col - 1).get(coord.row - 1);
   }
 
-  public Cell getEvaluatedCellAt(Coord coord) {
-    Sexp sexp = Parser.parse(currSpreadSheet.get(coord.col - 1).
-        get(coord.row - 1).getContents().toString());
+  public Value getEvaluatedCellAt(Coord coord) {
+    Value value = null;
+    Sexp sexp = Parser.parse(getCellAt(coord).getContents().toString());
 
-    try {
-      sexp.accept(new SexpToFormula());
-    }
-    catch (IllegalArgumentException e) {
+
+    Object deliverable = sexp.accept(new SexpToFormula());
+    if (deliverable instanceof Formula) {
 
     }
+    else if (deliverable instanceof Value) {
+      return (Value) getCellAt(coord).getContents();
+      //TODO maybe another try and cast to bool, num and string?
+    }
+    else if (deliverable instanceof Reference) {
+
+    }
+    else {
+      throw new IllegalArgumentException();
+    }
+
+    return value;
   }
 
+  public Value operatorDec(Formula formula) {
+
+    //TODO here we will need to iterate through a list
+    //TODO we know that whatever is put in here will be an SList
+
+    Value value;
+    String[] splitWord = formula.toString().split("\\(|\\)| ");
+
+    for (String item : splitWord) {
+      switch (item) {
+
+        case "SUM":
+
+          break;
+
+        case "PROD":
+
+          break;
+
+        case "<":
+
+          break;
+
+        case "COMB":
+
+          break;
+
+        default:
+
+          //TODO this means it could be a value or a reference
+          break;
+      }
+    }
+    return value;
+  }
+
+
+  public List<Value> operatorDec(Reference reference) {
+    Reference ref = new Reference(reference.toString());
+    List<Coord> refList = ref.getRefs();
+    List<Value> valueList = new ArrayList<>();
+    for (Coord item: refList) {
+      valueList.add(getEvaluatedCellAt(item));
+    }
+
+    return valueList;
+  }
+
+  public Value operatorDec(Value value) {
+    return value;
+  }
 
   /**
    *This is a static class that allows us to build the worksheet.
@@ -120,41 +186,66 @@ public class BasicWorksheet implements Spreadsheet {
     @Override
     public Builder createCell(int col, int row, String contents) {
       Coord coord = new Coord(col, row);
+      Sexp sexp = Parser.parse(contents);
 
-      if (contents.charAt(0) == '=') {
-        if (contents.contains(":")) {
-          Sexp sexp = Parser.parse(contents.substring(1));
-          Reference ref = new Reference(sexp.toString());
-          Cell cell = new Cell(coord, ref);
-          currSpreadSheet.get(col - 1).add(row - 1, cell);
-          cell.setContents(cell.getEvaluated(coord));
-          return this;
-
-        } else {
-          Sexp sexp = Parser.parse(contents.substring(1));
-          Cell cell = new Cell(coord, sexp.accept(new SexpToFormula()));
-          currSpreadSheet.get(col - 1).add(row - 1, cell);
-          cell.setContents(cell.getEvaluated(coord));
-          return this;
-        }
-      } else {
+      try {
+        Value valueTest = (Value) sexp;
         Cell cell = new Cell(coord, Parser.parse(contents).accept(new SexpToFormula()));
-        cell.setContents(cell.getEvaluated(coord));
+        cell.setEvaluatedData(getEvaluatedCellAt(getCellAt(coord.col, coord.row)));
         return this;
       }
+      catch (IllegalArgumentException e) {
+        //TODO print something here
+      }
+
+      try {
+        Reference referenceTest = (Reference) sexp;
+        Reference ref = new Reference(sexp.toString());
+        Cell cell = new Cell(coord, ref);
+        currSpreadSheet.get(col - 1).add(row - 1, cell);
+        cell.setEvaluatedData(getEvaluatedCellAt(coord));
+        return this;
+      }
+      catch (IllegalArgumentException e) {
+        //TODO print something here
+      }
+
+      try {
+        Formula formulaTest = (Formula) sexp;
+        Cell cell = new Cell(coord, sexp.accept(new SexpToFormula()));
+        currSpreadSheet.get(col - 1).add(row - 1, cell);
+        cell.setEvaluatedData(getEvaluatedCellAt(coord));
+        return this;
+      }
+
+      catch (IllegalArgumentException e) {
+        //TODO print something here
+      }
+
+      try {
+        return blankCell(coord);
+      }
+
+      catch (IllegalArgumentException e) {
+        //TODO print something here
+      }
+
+      return this;
     }
 
     /**
      * This creates a builder of a blank cell as a redundancy of the blank cell constructor.
-     * @param col column.
-     * @param row row.
+     * @param coord coordinate for new blank cell.
      * @return a Builder
      */
-    public Builder blankCell(int col, int row) {
-      Coord coord = new Coord(col, row);
+    public Builder blankCell(Coord coord) {
       Cell cell = new Cell(coord);
-      currSpreadSheet.get(col - 1).add(row - 1, cell);
+      currSpreadSheet.get(coord.col - 1).add(coord.row - 1, cell);
       return this;
+    }
+
+    public String getCellAt(int col, int row) {
+      return currSpreadSheet.get(col).get(row).getContents().toString();
     }
 
 
