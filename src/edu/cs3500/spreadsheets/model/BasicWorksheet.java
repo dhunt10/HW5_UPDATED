@@ -50,52 +50,79 @@ public class BasicWorksheet implements Spreadsheet {
   }
 
   public Value getEvaluatedCellAt(Coord coord) {
-    Value value;
-    Sexp sexp = Parser.parse(currSpreadSheet.get(coord.col - 1).
-        get(coord.row - 1).getContents().toString());
+    Value value = null;
+    Sexp sexp = Parser.parse(getCellAt(coord).getContents().toString());
 
-    try {
-      Object deliverable = sexp.accept(new SexpToFormula());
-      if (deliverable instanceof SList) {
-        value = operatorDec(deliverable.toList());
-      }
+
+    Object deliverable = sexp.accept(new SexpToFormula());
+    if (deliverable instanceof Formula) {
+
     }
-    catch (IllegalArgumentException e) {
+    else if (deliverable instanceof Value) {
+      return (Value) getCellAt(coord).getContents();
+      //TODO maybe another try and cast to bool, num and string?
+    }
+    else if (deliverable instanceof Reference) {
 
+    }
+    else {
+      throw new IllegalArgumentException();
     }
 
     return value;
   }
 
-  public Value operatorDec(List<Object> list) {
+  public Value operatorDec(Formula formula) {
 
+    //TODO here we will need to iterate through a list
+    //TODO we know that whatever is put in here will be an SList
 
-    switch () {
+    Value value;
+    String[] splitWord = formula.toString().split("\\(|\\)| ");
 
-      case "SUM":
+    for (String item : splitWord) {
+      switch (item) {
 
-        break;
+        case "SUM":
 
-      case "PROD":
+          break;
 
-        break;
+        case "PROD":
 
-      case "<":
+          break;
 
-        break;
+        case "<":
 
-      case "COMB":
+          break;
 
-        break;
+        case "COMB":
 
-      default:
+          break;
 
+        default:
 
-        break;
+          //TODO this means it could be a value or a reference
+          break;
+      }
     }
-
+    return value;
   }
 
+
+  public List<Value> operatorDec(Reference reference) {
+    Reference ref = new Reference(reference.toString());
+    List<Coord> refList = ref.getRefs();
+    List<Value> valueList = new ArrayList<>();
+    for (Coord item: refList) {
+      valueList.add(getEvaluatedCellAt(item));
+    }
+
+    return valueList;
+  }
+
+  public Value operatorDec(Value value) {
+    return value;
+  }
 
   /**
    *This is a static class that allows us to build the worksheet.
