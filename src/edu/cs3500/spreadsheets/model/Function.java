@@ -1,7 +1,9 @@
 package edu.cs3500.spreadsheets.model;
 
+import edu.cs3500.spreadsheets.model.values.Value;
 import edu.cs3500.spreadsheets.sexp.Parser;
 import edu.cs3500.spreadsheets.sexp.Sexp;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -41,4 +43,19 @@ public class Function implements Formula {
     return values;
   }
 
+  public Sexp getSexp() {
+    return sexp;
+  }
+
+  @Override
+  public Value evaluate() {
+    String fucntionName;
+    List<Value> argValues = new ArrayList<>();
+    List<Formula> args = new ArrayList<>();
+    for (Formula f: args) {
+      argValues.add(f.evaluate());
+    }
+
+    return
+  }
 }

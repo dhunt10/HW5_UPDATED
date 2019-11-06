@@ -43,6 +43,11 @@ public class NumValue implements Value {
     return this.number;
   }
 
+  @Override
+  public Value evaluate() {
+    return this;
+  }
+
   /**
    * Setter to set the value.
    * @param number number to be set.
