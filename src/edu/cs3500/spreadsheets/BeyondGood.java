@@ -1,11 +1,17 @@
 package edu.cs3500.spreadsheets;
 
 import edu.cs3500.spreadsheets.model.BasicWorksheet;
+import edu.cs3500.spreadsheets.model.BasicWorksheet.Builder;
+import edu.cs3500.spreadsheets.model.Cell;
+import edu.cs3500.spreadsheets.model.Coord;
+import edu.cs3500.spreadsheets.model.Formula;
 import edu.cs3500.spreadsheets.model.Spreadsheet;
 import edu.cs3500.spreadsheets.model.WorksheetReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * The main class for our program.
@@ -47,5 +53,9 @@ public class BeyondGood {
   private static void createSpreadSheet(File file, String cell) throws FileNotFoundException {
     FileReader fileReader = new FileReader(file);
     Spreadsheet s = WorksheetReader.read(BasicWorksheet.defaultBuilder(), fileReader);
-  }
+    Map<Coord, Cell> board = s.getCurrSpreadSheet();
+    Builder b = new Builder();
+    b.getEvaluatedCells();
+
+    }
 }
