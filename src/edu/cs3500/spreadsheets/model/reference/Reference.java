@@ -1,7 +1,9 @@
 package edu.cs3500.spreadsheets.model.reference;
 
+import edu.cs3500.spreadsheets.model.BasicWorksheet;
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.Formula;
+import edu.cs3500.spreadsheets.model.values.Value;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,4 +115,12 @@ public class Reference implements Formula {
     return references;
   }
 
+  @Override
+  public Value evaluate() {
+    List<Value> values = new ArrayList<>();
+    for (Coord c : evaluatedRefs) {
+      values.add(BasicWorksheet.getCellAt(c.col, c.row).getContents().evaluate());
+
+    }
+  }
 }
