@@ -14,6 +14,5 @@ public interface Formula {
   @Override
   public String toString();
 
-  public Value evaluate();
-
+  Value evaluate();
 }

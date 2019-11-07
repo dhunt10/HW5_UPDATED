@@ -78,7 +78,11 @@ public class Reference implements Formula {
     else if (firstBound.charAt(1) == secondBound.charAt(1)) {
       for (int i = 0; i < zeroDiff; i++) {
         StringBuilder sb = new StringBuilder();
+<<<<<<< HEAD
         sb.append(firstBound.charAt(0)+ i);
+=======
+        sb.append((char) firstBound.charAt(0) + 1);
+>>>>>>> 2e10a30e1c2a3d33c1fb360ac7fcc72f18613582
         sb.append(firstBound.charAt(1));
         bounds.add(sb.toString());
       }
@@ -88,7 +92,7 @@ public class Reference implements Formula {
       for (int i = 0; i < zeroDiff; i++) {
         for (int j = 0; j < oneDiff; j++) {
           StringBuilder sb = new StringBuilder();
-          sb.append(firstBound.charAt(0) + j);
+          sb.append((char) firstBound.charAt(0) + j);
           sb.append(firstBound.charAt(1) + i);
           bounds.add(sb.toString());
         }

@@ -3,6 +3,7 @@ package edu.cs3500.spreadsheets.model;
 import edu.cs3500.spreadsheets.model.values.Value;
 import edu.cs3500.spreadsheets.sexp.Parser;
 import edu.cs3500.spreadsheets.sexp.Sexp;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -14,10 +15,12 @@ public class Function implements Formula {
   Sexp sexp;
   String functionName;
 
+  List<Formula> args;
 
-  public Function(String item) {
-    this.functionName = item;
+  public Function(String item, List<Formula> args, String functionName) {
+    this.args = args;
     sexp = Parser.parse(item);
+    this.functionName = functionName;
   }
 
   private static double productHelper(List<Double> values) {
@@ -45,8 +48,27 @@ public class Function implements Formula {
     return values;
   }
 
+
+  public Sexp getSexp() {
+    return sexp;
+  }
+
   @Override
   public Value evaluate() {
-    return null;
+    String functionName = this.functionName;
+    List<Value> argValues = new ArrayList<>();
+    for (Formula f: this.args) {
+      argValues.add(f.evaluate());
+    }
+
+    return evaluateHelper(argValues);
+  }
+
+
+  public Value evaluateHelper(List<Value> values) {
+    Sexp sexp = Parser.parse(values.toString());
+    for (Formula a : values) {
+      if this.
+    }
   }
 }

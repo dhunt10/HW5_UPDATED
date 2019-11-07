@@ -55,6 +55,10 @@ public class BooleanValue implements Value {
     return Objects.hash(bool);
   }
 
+  @Override
+  public Value evaluate() {
+    return this;
+  }
 
   @Override
   public void setValue(Object value) {
