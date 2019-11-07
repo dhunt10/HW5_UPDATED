@@ -13,9 +13,13 @@ import java.util.List;
 public class Function implements Formula {
 
   Sexp sexp;
+  String functionName;
+  List<Formula> args;
 
-  public Function(String item) {
+  public Function(String item, List<Formula> args, String functionName) {
+    this.args = args;
     sexp = Parser.parse(item);
+    this.functionName = functionName;
   }
 
   private static double productHelper(List<Double> values) {
@@ -49,13 +53,20 @@ public class Function implements Formula {
 
   @Override
   public Value evaluate() {
-    String fucntionName;
+    String functionName = this.functionName;
     List<Value> argValues = new ArrayList<>();
-    List<Formula> args = new ArrayList<>();
-    for (Formula f: args) {
+    for (Formula f: this.args) {
       argValues.add(f.evaluate());
     }
 
-    return
+    return evaluateHelper(argValues);
+  }
+
+
+  public Value evaluateHelper(List<Value> values) {
+    Sexp sexp = Parser.parse(values.toString());
+    for (Formula a : values) {
+      if this.
+    }
   }
 }

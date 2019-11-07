@@ -5,10 +5,7 @@ import edu.cs3500.spreadsheets.model.reference.Reference;
 
 import edu.cs3500.spreadsheets.model.values.Value;
 import edu.cs3500.spreadsheets.sexp.Parser;
-import edu.cs3500.spreadsheets.sexp.SList;
 import edu.cs3500.spreadsheets.sexp.Sexp;
-import java.sql.Ref;
-import java.text.Normalizer.Form;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,50 +50,10 @@ public class BasicWorksheet implements Spreadsheet {
   }
 
   public Value getEvaluatedCellAt(Coord coord) {
-    Value value = null;
     Sexp sexp = Parser.parse(getCellAt(coord).getContents().toString());
-
     Formula deliverable = sexp.accept(new SexpToFormula());
     return deliverable.evaluate();
-
   }
-
-  public Value operatorDec(Formula formula) {
-
-    //TODO here we will need to iterate through a list
-    //TODO we know that whatever is put in here will be an SList
-
-    Value value;
-    String[] splitWord = formula.toString().split("\\(|\\)| ");
-
-    for (String item : splitWord) {
-      switch (item) {
-
-        case "SUM":
-
-          break;
-
-        case "PROD":
-
-          break;
-
-        case "<":
-
-          break;
-
-        case "COMB":
-
-          break;
-
-        default:
-
-          //TODO this means it could be a value or a reference
-          break;
-      }
-    }
-    return value;
-  }
-
 
   public List<Value> operatorDec(Reference reference) {
     Reference ref = new Reference(reference.toString());
@@ -186,51 +143,6 @@ public class BasicWorksheet implements Spreadsheet {
       cell.setEvaluatedData(getEvaluatedCellAt(coord));
       return this;
 
-      /*
-      try {
-        Value valueTest = (Value) sexp;
-        Cell cell = new Cell(coord, Parser.parse(contents).accept(new SexpToFormula()));
-        cell.setEvaluatedData(getEvaluatedCellAt(getCellAt(coord.col, coord.row)));
-        return this;
-      }
-      catch (IllegalArgumentException e) {
-        //TODO print something here
-      }
-
-      try {
-        Reference referenceTest = (Reference) sexp;
-        Reference ref = new Reference(sexp.toString());
-        Cell cell = new Cell(coord, ref);
-        currSpreadSheet.get(col - 1).add(row - 1, cell);
-        cell.setEvaluatedData(getEvaluatedCellAt(coord));
-        return this;
-      }
-      catch (IllegalArgumentException e) {
-        //TODO print something here
-      }
-
-      try {
-        Formula formulaTest = (Formula) sexp;
-        Cell cell = new Cell(coord, sexp.accept(new SexpToFormula()));
-        currSpreadSheet.get(col - 1).add(row - 1, cell);
-        cell.setEvaluatedData(getEvaluatedCellAt(coord));
-        return this;
-      }
-
-      catch (IllegalArgumentException e) {
-        //TODO print something here
-      }
-
-      try {
-        return blankCell(coord);
-      }
-
-      catch (IllegalArgumentException e) {
-        //TODO print something here
-      }
-
-      return this;
-      */
     }
 
       /**
