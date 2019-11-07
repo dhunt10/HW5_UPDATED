@@ -1,6 +1,5 @@
 package edu.cs3500.spreadsheets.model.values;
 
-import edu.cs3500.spreadsheets.model.values.Value;
 import java.util.Objects;
 
 /**
@@ -22,6 +21,11 @@ public class BooleanValue implements Value {
   @Override
   public String toString() {
     return String.valueOf(bool);
+  }
+
+  @Override
+  public Value evaluate() {
+    return null;
   }
 
   @Override

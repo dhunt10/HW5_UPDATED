@@ -2,6 +2,7 @@ package edu.cs3500.spreadsheets.model.reference;
 
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.Formula;
+import edu.cs3500.spreadsheets.model.values.Value;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,8 +78,8 @@ public class Reference implements Formula {
     else if (firstBound.charAt(1) == secondBound.charAt(1)) {
       for (int i = 0; i < zeroDiff; i++) {
         StringBuilder sb = new StringBuilder();
-        sb.append(firstBound.charAt(0));
-        sb.append(firstBound.charAt(1) + i);
+        sb.append(firstBound.charAt(0)+ i);
+        sb.append(firstBound.charAt(1));
         bounds.add(sb.toString());
       }
     }
@@ -113,4 +114,8 @@ public class Reference implements Formula {
     return references;
   }
 
+  @Override
+  public Value evaluate() {
+    return null;
+  }
 }

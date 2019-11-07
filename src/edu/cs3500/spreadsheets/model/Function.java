@@ -1,5 +1,6 @@
 package edu.cs3500.spreadsheets.model;
 
+import edu.cs3500.spreadsheets.model.values.Value;
 import edu.cs3500.spreadsheets.sexp.Parser;
 import edu.cs3500.spreadsheets.sexp.Sexp;
 import java.util.Collections;
@@ -11,8 +12,11 @@ import java.util.List;
 public class Function implements Formula {
 
   Sexp sexp;
+  String functionName;
+
 
   public Function(String item) {
+    this.functionName = item;
     sexp = Parser.parse(item);
   }
 
@@ -41,4 +45,8 @@ public class Function implements Formula {
     return values;
   }
 
+  @Override
+  public Value evaluate() {
+    return null;
+  }
 }
