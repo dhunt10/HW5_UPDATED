@@ -11,4 +11,9 @@ public interface Spreadsheet {
    * @return the cell at the specified coordinate.
    */
   public Cell getCellAt(Coord coord);
+
+  public int getHeight();
+  public int getWidth();
+
+
 }

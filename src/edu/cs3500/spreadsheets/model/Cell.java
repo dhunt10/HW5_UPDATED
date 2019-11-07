@@ -4,6 +4,7 @@ import edu.cs3500.spreadsheets.model.reference.Reference;
 import edu.cs3500.spreadsheets.model.values.StringValue;
 import edu.cs3500.spreadsheets.model.values.Value;
 import edu.cs3500.spreadsheets.sexp.SList;
+import java.awt.Graphics2D;
 
 
 /**
@@ -62,5 +63,7 @@ public class Cell {
     this.evaluatedData = value;
   }
 
+  public void drawSelf(Graphics2D g2d) {
+  }
 }
 
