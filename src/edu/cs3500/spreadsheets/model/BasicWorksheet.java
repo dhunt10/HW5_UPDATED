@@ -5,10 +5,7 @@ import edu.cs3500.spreadsheets.model.reference.Reference;
 
 import edu.cs3500.spreadsheets.model.values.Value;
 import edu.cs3500.spreadsheets.sexp.Parser;
-import edu.cs3500.spreadsheets.sexp.SList;
 import edu.cs3500.spreadsheets.sexp.Sexp;
-import java.sql.Ref;
-import java.text.Normalizer.Form;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,14 +20,16 @@ public class BasicWorksheet implements Spreadsheet {
 
   /**
    * This build the worksheet with given list of cells.
+   *
    * @param currSpreadSheet array list of array list holding the cells
    */
-  public BasicWorksheet(ArrayList<ArrayList<Cell>>  currSpreadSheet) {
+  public BasicWorksheet(ArrayList<ArrayList<Cell>> currSpreadSheet) {
     this.currSpreadSheet = currSpreadSheet;
   }
 
   /**
    * This is a Builder that returns a worksheet with the default parameters.
+   *
    * @return a basic build Worksheet.
    */
   public static Builder defaultBuilder() {
@@ -39,8 +38,9 @@ public class BasicWorksheet implements Spreadsheet {
 
 
   /**
-   *This helps us locate the cells in the Arraylist of Arraylist of cells so we can
-   * make changes to specific cells.
+   * This helps us locate the cells in the Arraylist of Arraylist of cells so we can make changes to
+   * specific cells.
+   *
    * @param coord is the location of the cell.
    * @return the cell at the given coordinates.
    */
@@ -50,70 +50,16 @@ public class BasicWorksheet implements Spreadsheet {
   }
 
   public Value getEvaluatedCellAt(Coord coord) {
-    Value value = null;
     Sexp sexp = Parser.parse(getCellAt(coord).getContents().toString());
-
-
-    Object deliverable = sexp.accept(new SexpToFormula());
-    if (deliverable instanceof Formula) {
-
-    }
-    else if (deliverable instanceof Value) {
-      return (Value) getCellAt(coord).getContents();
-      //TODO maybe another try and cast to bool, num and string?
-    }
-    else if (deliverable instanceof Reference) {
-
-    }
-    else {
-      throw new IllegalArgumentException();
-    }
-
-    return value;
+    Formula deliverable = sexp.accept(new SexpToFormula());
+    return deliverable.evaluate();
   }
-
-  public Value operatorDec(Formula formula) {
-
-    //TODO here we will need to iterate through a list
-    //TODO we know that whatever is put in here will be an SList
-
-    Value value;
-    String[] splitWord = formula.toString().split("\\(|\\)| ");
-
-    for (String item : splitWord) {
-      switch (item) {
-
-        case "SUM":
-
-          break;
-
-        case "PROD":
-
-          break;
-
-        case "<":
-
-          break;
-
-        case "COMB":
-
-          break;
-
-        default:
-
-          //TODO this means it could be a value or a reference
-          break;
-      }
-    }
-    return value;
-  }
-
 
   public List<Value> operatorDec(Reference reference) {
     Reference ref = new Reference(reference.toString());
     List<Coord> refList = ref.getRefs();
     List<Value> valueList = new ArrayList<>();
-    for (Coord item: refList) {
+    for (Coord item : refList) {
       valueList.add(getEvaluatedCellAt(item));
     }
 
@@ -125,7 +71,7 @@ public class BasicWorksheet implements Spreadsheet {
   }
 
   /**
-   *This is a static class that allows us to build the worksheet.
+   * This is a static class that allows us to build the worksheet.
    */
   public static final class Builder implements WorksheetBuilder<Spreadsheet> {
 
@@ -136,8 +82,9 @@ public class BasicWorksheet implements Spreadsheet {
 
 
     /**
-     *This was meant for us to set the size of the list, still trying to figure out if needed and
+     * This was meant for us to set the size of the list, still trying to figure out if needed and
      * this is left so we can try and implement a set height and width of a spreadsheet.
+     *
      * @param height height.
      * @return a Builde.
      */
@@ -150,8 +97,9 @@ public class BasicWorksheet implements Spreadsheet {
     }
 
     /**
-     *This was meant for us to set the size of the list, still trying to figure out if needed and
+     * This was meant for us to set the size of the list, still trying to figure out if needed and
      * this is left so we can try and implement a set height and width of a spreadsheet.
+     *
      * @param width width.
      * @return a Builder
      */
@@ -164,8 +112,9 @@ public class BasicWorksheet implements Spreadsheet {
     }
 
     /**
-     *This was to set the list of cells, we need to work on the implementation of this but we know
+     * This was to set the list of cells, we need to work on the implementation of this but we know
      * it will be needed.
+     *
      * @return a Builder
      */
     public Builder setGrid() {
@@ -174,93 +123,55 @@ public class BasicWorksheet implements Spreadsheet {
     }
 
     /**
-     *This is a function that creates a cell as part of the builder to create a worksheet.
-     * @param col the column of the new cell (1-indexed)
-     * @param row the row of the new cell (1-indexed)
-     * @param contents the raw contents of the new cell: may be {@code null}, or any string.
-     *                 Strings beginning with an {@code =} character should be
-     *                 treated as formulas; all other strings should be treated as number or
-     *                 boolean values if possible, and string values otherwise.
+     * This is a function that creates a cell as part of the builder to create a worksheet.
+     *
+     * @param col      the column of the new cell (1-indexed)
+     * @param row      the row of the new cell (1-indexed)
+     * @param contents the raw contents of the new cell: may be {@code null}, or any string. Strings
+     *                 beginning with an {@code =} character should be treated as formulas; all
+     *                 other strings should be treated as number or boolean values if possible, and
+     *                 string values otherwise.
      * @return a Builder
      */
     @Override
     public Builder createCell(int col, int row, String contents) {
       Coord coord = new Coord(col, row);
       Sexp sexp = Parser.parse(contents);
+      Formula formula = sexp.accept(new SexpToFormula());
 
-      try {
-        Value valueTest = (Value) sexp;
-        Cell cell = new Cell(coord, Parser.parse(contents).accept(new SexpToFormula()));
-        cell.setEvaluatedData(getEvaluatedCellAt(getCellAt(coord.col, coord.row)));
-        return this;
-      }
-      catch (IllegalArgumentException e) {
-        //TODO print something here
-      }
-
-      try {
-        Reference referenceTest = (Reference) sexp;
-        Reference ref = new Reference(sexp.toString());
-        Cell cell = new Cell(coord, ref);
-        currSpreadSheet.get(col - 1).add(row - 1, cell);
-        cell.setEvaluatedData(getEvaluatedCellAt(coord));
-        return this;
-      }
-      catch (IllegalArgumentException e) {
-        //TODO print something here
-      }
-
-      try {
-        Formula formulaTest = (Formula) sexp;
-        Cell cell = new Cell(coord, sexp.accept(new SexpToFormula()));
-        currSpreadSheet.get(col - 1).add(row - 1, cell);
-        cell.setEvaluatedData(getEvaluatedCellAt(coord));
-        return this;
-      }
-
-      catch (IllegalArgumentException e) {
-        //TODO print something here
-      }
-
-      try {
-        return blankCell(coord);
-      }
-
-      catch (IllegalArgumentException e) {
-        //TODO print something here
-      }
-
+      Cell cell = new Cell(coord, formula);
+      cell.setEvaluatedData(getEvaluatedCellAt(coord));
       return this;
+
     }
 
-    /**
-     * This creates a builder of a blank cell as a redundancy of the blank cell constructor.
-     * @param coord coordinate for new blank cell.
-     * @return a Builder
-     */
-    public Builder blankCell(Coord coord) {
-      Cell cell = new Cell(coord);
-      currSpreadSheet.get(coord.col - 1).add(coord.row - 1, cell);
-      return this;
-    }
-
-    public String getCellAt(int col, int row) {
-      return currSpreadSheet.get(col).get(row).getContents().toString();
-    }
-
-
-    /**
-     *This creates the worksheet from the builder.
-     * @return BasicWorksheet
-     */
-    @Override
-    public BasicWorksheet createWorksheet() {
-      if (currSpreadSheet.size() == 0 || currSpreadSheet.get(0).size() == 0) {
-        throw new IllegalArgumentException("Null width or height");
+      /**
+       * This creates a builder of a blank cell as a redundancy of the blank cell constructor.
+       * @param coord coordinate for new blank cell.
+       * @return a Builder
+       */
+      public Builder blankCell (Coord coord){
+        Cell cell = new Cell(coord);
+        currSpreadSheet.get(coord.col - 1).add(coord.row - 1, cell);
+        return this;
       }
-      return new BasicWorksheet(currSpreadSheet);
+
+      public String getCellAt ( int col, int row){
+        return currSpreadSheet.get(col).get(row).getContents().toString();
+      }
+
+      /**
+       *This creates the worksheet from the builder.
+       * @return BasicWorksheet
+       */
+      @Override
+      public BasicWorksheet createWorksheet () {
+        if (currSpreadSheet.size() == 0 || currSpreadSheet.get(0).size() == 0) {
+          throw new IllegalArgumentException("Null width or height");
+        }
+        return new BasicWorksheet(currSpreadSheet);
+      }
+
+
     }
-
-
   }
-}

@@ -48,6 +48,11 @@ public class StringValue implements Value {
   }
 
   @Override
+  public Value evaluate() {
+    return this;
+  }
+
+  @Override
   public int hashCode()  {
     return Objects.hash(string);
   }

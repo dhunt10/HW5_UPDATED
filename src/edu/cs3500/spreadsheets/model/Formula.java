@@ -1,5 +1,7 @@
 package edu.cs3500.spreadsheets.model;
 
+import edu.cs3500.spreadsheets.model.values.Value;
+
 /**
  * This represents any function, reference, or value that goes into a cell.
  */
@@ -11,4 +13,6 @@ public interface Formula {
    */
   @Override
   public String toString();
+
+  Value evaluate();
 }

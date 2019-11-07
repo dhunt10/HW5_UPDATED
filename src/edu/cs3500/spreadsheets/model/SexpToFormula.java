@@ -6,6 +6,7 @@ import edu.cs3500.spreadsheets.model.values.NumValue;
 import edu.cs3500.spreadsheets.model.values.StringValue;
 import edu.cs3500.spreadsheets.sexp.Sexp;
 import edu.cs3500.spreadsheets.sexp.SexpVisitor;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,7 +42,13 @@ public class SexpToFormula implements SexpVisitor<Formula> {
    */
   @Override
   public Formula visitSList(List<Sexp> l) {
-    return new Function(l.toString());
+    List<Formula> args = new ArrayList<>();
+    for(int i = 0; i < l.size(); i++){
+      args.add(l.get(i).accept(this));
+    }
+
+    return new Function(l.toString(), args, l.get(0).toString());
+
   }
 
   /**
@@ -51,7 +58,22 @@ public class SexpToFormula implements SexpVisitor<Formula> {
    */
   @Override
   public Formula visitSymbol(String s) {
-    return new Reference(s);
+    switch (s) {
+      case "SUM":
+        return new StringValue("SUM");
+
+      case "PROD":
+        return new StringValue("PROD");
+
+      case "<":
+        return new StringValue("<");
+
+      case "COMB":
+        return new StringValue("COMB");
+
+      default:
+        return new Reference(s);
+    }
   }
 
   /**
