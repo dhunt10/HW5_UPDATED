@@ -6,8 +6,41 @@ import edu.cs3500.spreadsheets.model.reference.Reference;
 import edu.cs3500.spreadsheets.model.values.Value;
 import edu.cs3500.spreadsheets.sexp.Parser;
 import edu.cs3500.spreadsheets.sexp.Sexp;
+<<<<<<< HEAD
+<<<<<<< Updated upstream
+=======
 import java.util.ArrayList;
+import javax.swing.plaf.IconUIResource;
+>>>>>>> Stashed changes
+
+
+public class BasicWorkSheet implements Spreadsheet {
+
+  final int height;
+  final int width;
+<<<<<<< Updated upstream
+  private final Cell[][] currSpreadSheet;
+
+  public BasicWorkSheet(int height, int width, Cell[][] worksheet) {
+    this.height = height;
+    this.width = width;
+    currSpreadSheet = worksheet;
+  }
+
+  public int getHeight(){
+    return this.height;
+  }
+
+  public int getWidth(){
+    return this.width;
+  }
+
+=======
+import java.text.Normalizer.Form;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This is a worksheet representation that has the basic needs that were
@@ -16,14 +49,14 @@ import java.util.List;
  */
 public class BasicWorksheet implements Spreadsheet {
 
-  private ArrayList<ArrayList<Cell>> currSpreadSheet;
+  private List<Coord> coordList = new ArrayList<>();
 
   /**
    * This build the worksheet with given list of cells.
    *
    * @param currSpreadSheet array list of array list holding the cells
    */
-  public BasicWorksheet(ArrayList<ArrayList<Cell>> currSpreadSheet) {
+  public BasicWorksheet(Map<Coord, Cell> currSpreadSheet) {
     this.currSpreadSheet = currSpreadSheet;
   }
 
@@ -32,10 +65,19 @@ public class BasicWorksheet implements Spreadsheet {
    *
    * @return a basic build Worksheet.
    */
+>>>>>>> e1b36a44c8cd76964ebb557efdbf37dab1208bd6
   public static Builder defaultBuilder() {
     return new Builder();
+=======
+
+  public BasicWorksheet() {
+
   }
 
+  @Override
+  public Cell getCellAt(Coord coord) {
+    return currSpreadSheet.get(coord.col).get(coord.row);
+  }
 
   /**
    * This helps us locate the cells in the Arraylist of Arraylist of cells so we can make changes to
@@ -45,17 +87,31 @@ public class BasicWorksheet implements Spreadsheet {
    * @return the cell at the given coordinates.
    */
   @Override
+<<<<<<< HEAD
+  public int getHeight() {
+    return ;
+>>>>>>> Stashed changes
+  }
+
+  @Override
+  public Cell getCellAt(int x, int y) {
+    return currSpreadSheet[x-1][y-1];
+  }
+
   public Cell getCellAt(Coord coord) {
-    return currSpreadSheet.get(coord.col - 1).get(coord.row - 1);
+    return null;
+=======
+  public Cell getCellAt(Coord coord) {
+    return currSpreadSheet.get(coord);
+>>>>>>> e1b36a44c8cd76964ebb557efdbf37dab1208bd6
   }
 
-  public Value getEvaluatedCellAt(Coord coord) {
-    Sexp sexp = Parser.parse(getCellAt(coord).getContents().toString());
-    Formula deliverable = sexp.accept(new SexpToFormula());
-    return deliverable.evaluate();
+  @Override
+  public Map<Coord, Cell> getCurrSpreadSheet() {
+    return currSpreadSheet;
   }
 
-  public List<Value> operatorDec(Reference reference) {
+  /*public List<Value> operatorDec(Reference reference) {
     Reference ref = new Reference(reference.toString());
     List<Coord> refList = ref.getRefs();
     List<Value> valueList = new ArrayList<>();
@@ -63,8 +119,33 @@ public class BasicWorksheet implements Spreadsheet {
       valueList.add(getEvaluatedCellAt(item));
     }
 
+<<<<<<< HEAD
+    //set to zero to test empty worksheet
+    private int height = 0;
+    private int width = 0;
+    private Cell[][] currSpreadSheet = new Cell[height][width];
+
+    public Builder setHeight(int height) {
+      if (height < 0) {
+        throw new IllegalArgumentException("Height cannot be negative");
+      }
+      this.height = height;
+      return this;
+    }
+
+    public Builder setWidth(int width) {
+      if (height < 0) {
+        throw new IllegalArgumentException("Height cannot be negative");
+      }
+      this.width = width;
+      return this;
+    }
+
+    public Builder setGrid() {
+      currSpreadSheet = new Cell[width][height];
+=======
     return valueList;
-  }
+  }*/
 
   public Value operatorDec(Value value) {
     return value;
@@ -75,52 +156,9 @@ public class BasicWorksheet implements Spreadsheet {
    */
   public static final class Builder implements WorksheetBuilder<Spreadsheet> {
 
-    //set to zero to test empty worksheet
-    private int height = 26;
-    private int width = 26;
-    private ArrayList<ArrayList<Cell>> currSpreadSheet = new ArrayList<>();
+    private Map<Coord, Cell> currSpreadSheet = new HashMap<Coord, Cell>();
+    private List<Coord> coordList = new ArrayList<>();
 
-
-    /**
-     * This was meant for us to set the size of the list, still trying to figure out if needed and
-     * this is left so we can try and implement a set height and width of a spreadsheet.
-     *
-     * @param height height.
-     * @return a Builde.
-     */
-    public Builder setHeight(int height) {
-      if (height < 0 || height > 999) {
-        throw new IllegalArgumentException("Height cannot be negative");
-      }
-      this.height = height;
-      return this;
-    }
-
-    /**
-     * This was meant for us to set the size of the list, still trying to figure out if needed and
-     * this is left so we can try and implement a set height and width of a spreadsheet.
-     *
-     * @param width width.
-     * @return a Builder
-     */
-    public Builder setWidth(int width) {
-      if (width < 0 || width > 999) {
-        throw new IllegalArgumentException("Height cannot be negative");
-      }
-      this.width = width;
-      return this;
-    }
-
-    /**
-     * This was to set the list of cells, we need to work on the implementation of this but we know
-     * it will be needed.
-     *
-     * @return a Builder
-     */
-    public Builder setGrid() {
-      currSpreadSheet = new ArrayList<>();
-      return this;
-    }
 
     /**
      * This is a function that creates a cell as part of the builder to create a worksheet.
@@ -140,9 +178,65 @@ public class BasicWorksheet implements Spreadsheet {
       Formula formula = sexp.accept(new SexpToFormula());
 
       Cell cell = new Cell(coord, formula);
-      cell.setEvaluatedData(getEvaluatedCellAt(coord));
+      currSpreadSheet.put(coord, cell);
+      coordList.add(coord);
+>>>>>>> e1b36a44c8cd76964ebb557efdbf37dab1208bd6
       return this;
 
+    }
+
+
+<<<<<<< HEAD
+      if (contents.charAt(0) == '=') {
+        Sexp sexp = Parser.parse(contents.substring(1));
+        Cell cell = new Cell(coord, sexp.toString());
+        cell.setSexp(sexp);
+        currSpreadSheet[col - 1][row - 1] = cell;
+        return this;
+      } else {
+        try {
+          Cell cell = new Cell(coord, contents);
+          currSpreadSheet[col - 1][row - 1] = cell;
+          cell.setBoolean(Boolean.valueOf(contents));
+          return this;
+        } catch (NullPointerException e) {
+          try {
+            Cell cell = new Cell(coord, contents);
+            currSpreadSheet[col - 1][row - 1] = cell;
+            cell.setDouble(Double.valueOf(contents));
+            return this;
+          } catch (NullPointerException ee) {
+            Cell cell = new Cell(coord, contents);
+            currSpreadSheet[col - 1][row - 1] = cell;
+            cell.setString(contents);
+            return this;
+          }
+        }
+      }
+    }
+
+    public Builder blankCell(int col, int row) {
+      Coord coord = new Coord(col, row);
+      Cell cell = new Cell(coord);
+      currSpreadSheet[col-1][row-1] = cell;
+      return this;
+    }
+
+    @Override
+    public BasicWorkSheet createWorksheet() {
+      if (this.height < 0 || this.width < 0) {
+        throw new IllegalArgumentException("Null width or height");
+      }
+      return new BasicWorkSheet(height, width, currSpreadSheet);
+    }
+=======
+    public void getEvaluatedCells() {
+
+      for (Coord item : coordList) {
+        Sexp sexp = Parser.parse(currSpreadSheet.get(item).getContents().toString());
+        Formula deliverable = sexp.accept(new SexpToFormula());
+        currSpreadSheet.get(item).setEvaluatedData(deliverable.evaluate());
+      }
     }
 
       /**
@@ -152,12 +246,12 @@ public class BasicWorksheet implements Spreadsheet {
        */
       public Builder blankCell (Coord coord){
         Cell cell = new Cell(coord);
-        currSpreadSheet.get(coord.col - 1).add(coord.row - 1, cell);
+        currSpreadSheet.put(coord, cell);
         return this;
       }
 
-      public String getCellAt ( int col, int row){
-        return currSpreadSheet.get(col).get(row).getContents().toString();
+      public Cell getCellAt (Coord coord){
+        return currSpreadSheet.get(coord);
       }
 
       /**
@@ -166,12 +260,23 @@ public class BasicWorksheet implements Spreadsheet {
        */
       @Override
       public BasicWorksheet createWorksheet () {
-        if (currSpreadSheet.size() == 0 || currSpreadSheet.get(0).size() == 0) {
+        if (currSpreadSheet.size() == 0) {
           throw new IllegalArgumentException("Null width or height");
         }
         return new BasicWorksheet(currSpreadSheet);
       }
+>>>>>>> e1b36a44c8cd76964ebb557efdbf37dab1208bd6
+
+      public Map<Coord, Cell> getCurrSpreadSheet() {
+        return currSpreadSheet;
+      }
+
 
 
     }
   }
+<<<<<<< HEAD
+
+}
+=======
+>>>>>>> e1b36a44c8cd76964ebb557efdbf37dab1208bd6

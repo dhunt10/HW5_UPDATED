@@ -1,7 +1,14 @@
 package edu.cs3500.spreadsheets.model.reference;
 
+<<<<<<< HEAD
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.Formula;
+=======
+import edu.cs3500.spreadsheets.model.BasicWorksheet;
+import edu.cs3500.spreadsheets.model.Coord;
+import edu.cs3500.spreadsheets.model.Formula;
+import edu.cs3500.spreadsheets.model.values.Value;
+>>>>>>> e1b36a44c8cd76964ebb557efdbf37dab1208bd6
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,12 +22,15 @@ public class Reference implements Formula {
   String references;
   List<Coord> evaluatedRefs;
 
+<<<<<<< HEAD
+=======
   /**
    * Contructor. takes in a string that should be formatted as ["Cell1:Cell2"] or ["Cell1].
    * The constructor takes in a string, calls a function to make a list of the cells.
    * being references and then calls an additional function to return a list of coordinates.
    * @param references a string formatted as such: ["Cell1:Cell2"] or ["Cell1].
    */
+>>>>>>> e1b36a44c8cd76964ebb557efdbf37dab1208bd6
   public Reference(String references) {
     this.references = references;
     String[] splitter = references.split(":");
@@ -35,12 +45,15 @@ public class Reference implements Formula {
     this.evaluatedRefs = getRefs();
   }
 
+<<<<<<< HEAD
+=======
   /**
    * Makes a list of single reference cell.
    * Polymorphic design allows for just one cell.
    * @param firstBound the single cell to be parsed through.
    * @return returns a list of 1 single reference cell.
    */
+>>>>>>> e1b36a44c8cd76964ebb557efdbf37dab1208bd6
   public List<String> referenceListMaker(String firstBound) {
 
     List<String> bounds = new ArrayList<>();
@@ -53,12 +66,15 @@ public class Reference implements Formula {
     return bounds;
   }
 
+<<<<<<< HEAD
+=======
   /**
    * Makes a list of all the cells within a given range.
    * @param firstBound range is defined with firstBound as the start.
    * @param secondBound range is defined with second bound as the start.
    * @return a list of strings that hold all the points being referenced.
    */
+>>>>>>> e1b36a44c8cd76964ebb557efdbf37dab1208bd6
   public List<String> referenceListMaker(String firstBound, String secondBound) {
     List<String> bounds = new ArrayList<>();
 
@@ -77,8 +93,13 @@ public class Reference implements Formula {
     else if (firstBound.charAt(1) == secondBound.charAt(1)) {
       for (int i = 0; i < zeroDiff; i++) {
         StringBuilder sb = new StringBuilder();
+<<<<<<< HEAD
+        sb.append(firstBound.charAt(0));
+        sb.append(firstBound.charAt(1) + i);
+=======
         sb.append((char) firstBound.charAt(0) + 1);
         sb.append(firstBound.charAt(1));
+>>>>>>> e1b36a44c8cd76964ebb557efdbf37dab1208bd6
         bounds.add(sb.toString());
       }
     }
@@ -87,7 +108,11 @@ public class Reference implements Formula {
       for (int i = 0; i < zeroDiff; i++) {
         for (int j = 0; j < oneDiff; j++) {
           StringBuilder sb = new StringBuilder();
+<<<<<<< HEAD
+          sb.append(firstBound.charAt(0) + j);
+=======
           sb.append((char) firstBound.charAt(0) + j);
+>>>>>>> e1b36a44c8cd76964ebb557efdbf37dab1208bd6
           sb.append(firstBound.charAt(1) + i);
           bounds.add(sb.toString());
         }
@@ -98,10 +123,13 @@ public class Reference implements Formula {
     return bounds;
   }
 
+<<<<<<< HEAD
+=======
   /**
    * converts the strings made in referenceListMaker to coordinates.
    * @return a list of coordinates being referenced.
    */
+>>>>>>> e1b36a44c8cd76964ebb557efdbf37dab1208bd6
   public List<Coord> getRefs() {
     List<Coord> references = null;
     for (int i = 0; i < this.refs.size(); i ++) {
@@ -113,4 +141,15 @@ public class Reference implements Formula {
     return references;
   }
 
+<<<<<<< HEAD
+=======
+  @Override
+  public Value evaluate() {
+    List<Value> values = new ArrayList<>();
+    for (Coord c : evaluatedRefs) {
+      values.add(BasicWorksheet.getCellAt(c.col, c.row).getContents().evaluate());
+
+    }
+  }
+>>>>>>> e1b36a44c8cd76964ebb557efdbf37dab1208bd6
 }

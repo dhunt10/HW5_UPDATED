@@ -60,5 +60,10 @@ public class NumValue implements Value {
   public int hashCode() {
     return Objects.hash(number);
   }
+
+  @Override
+  public void setValue(String value) {
+
+  }
 }
 

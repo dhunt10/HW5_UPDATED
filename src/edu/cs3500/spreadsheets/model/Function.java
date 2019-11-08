@@ -1,5 +1,28 @@
 package edu.cs3500.spreadsheets.model;
 
+<<<<<<< HEAD
+import edu.cs3500.spreadsheets.sexp.Sexp;
+
+public class Function implements Formula {
+  String formula;
+  Sexp rawFormula;
+
+  private Function(Sexp sexp) {
+
+  }
+
+  @Override
+  public void evaluate() {
+
+  }
+
+  @Override
+  public void getFormula(Coord coord) {
+
+=======
+import edu.cs3500.spreadsheets.model.values.BooleanValue;
+import edu.cs3500.spreadsheets.model.values.NumValue;
+import edu.cs3500.spreadsheets.model.values.StringValue;
 import edu.cs3500.spreadsheets.model.values.Value;
 import edu.cs3500.spreadsheets.sexp.Parser;
 import edu.cs3500.spreadsheets.sexp.Sexp;
@@ -65,8 +88,41 @@ public class Function implements Formula {
 
   public Value evaluateHelper(List<Value> values) {
     Sexp sexp = Parser.parse(values.toString());
-    for (Formula a : values) {
-      if this.
+    if (this.functionName == "SUM") {
+      double ans = 0;
+      for (Formula a : values) {
+        ans = ans + Double.parseDouble(a.evaluate().toString());
+      }
+      return new NumValue(ans);
     }
+
+    else if (this.functionName == "PROD") {
+      double ans = 1;
+      for (Formula a : values) {
+        ans = ans * Double.parseDouble(a.evaluate().toString());
+      }
+      return new NumValue(ans);
+    }
+
+    else if (this.functionName == "<") {
+      boolean ans = Double.parseDouble(values.get(1).evaluate().toString())
+          < Double.parseDouble(values.get(1).evaluate().toString());
+      return new BooleanValue(ans);
+    }
+
+    else if (this.functionName == "COMB") {
+      StringBuilder sb = new StringBuilder();
+
+      for (Formula a : values) {
+        sb.append(a.evaluate());
+      }
+
+      return new StringValue(sb.toString());
+    }
+    else {
+      throw new IllegalArgumentException("Not a valid operator");
+    }
+
+>>>>>>> e1b36a44c8cd76964ebb557efdbf37dab1208bd6
   }
 }
