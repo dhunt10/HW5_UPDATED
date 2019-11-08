@@ -9,6 +9,11 @@ public class Coord {
   public final int row;
   public final int col;
 
+  /**
+   * Initializer for coordinate.
+   * @param col column.
+   * @param row row.
+   */
   public Coord(int col, int row) {
     if (row < 1 || col < 1) {
       throw new IllegalArgumentException("Coordinates should be strictly positive");

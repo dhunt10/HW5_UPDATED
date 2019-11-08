@@ -1,23 +1,30 @@
 package edu.cs3500.spreadsheets.model.values;
 
-import edu.cs3500.spreadsheets.model.values.Value;
 import java.util.Objects;
 
+/**
+ * Class defines what it is to be a boolean value within a cell.
+ */
 public class BooleanValue implements Value {
 
   private boolean bool;
 
-  public BooleanValue(boolean bool){
+
+  /**
+   * Constructor. takes in a boolean and saves it.
+   * @param bool boolean to be saved as this.boolean.
+   */
+  public BooleanValue(boolean bool) {
     this.bool = bool;
   }
 
   @Override
-  public String toString(){
+  public String toString() {
     return String.valueOf(bool);
   }
 
   @Override
-  public boolean equals(Object o){
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
@@ -25,24 +32,40 @@ public class BooleanValue implements Value {
       return false;
     }
     BooleanValue value = (BooleanValue) o;
-    return Boolean.compare(value.bool, bool)==0;
+    return Boolean.compare(value.bool, bool) == 0;
   }
 
 
+  /**
+   * Standard get function.
+   * @return the value of the boolean.
+   */
   public boolean getValue() {
     return this.bool;
   }
 
 
+<<<<<<< HEAD
   @Override
   public void setValue(String bool) {
       this.bool = Boolean.parseBoolean(bool);
   }
 
+=======
+>>>>>>> e1b36a44c8cd76964ebb557efdbf37dab1208bd6
   @Override
   public int hashCode() {
     return Objects.hash(bool);
   }
 
+  @Override
+  public Value evaluate() {
+    return this;
+  }
 
+  @Override
+  public void setValue(Object value) {
+
+  }
 }
+
