@@ -3,12 +3,18 @@ package edu.cs3500.spreadsheets.model;
 import edu.cs3500.spreadsheets.model.WorksheetReader.WorksheetBuilder;
 import edu.cs3500.spreadsheets.sexp.Parser;
 import edu.cs3500.spreadsheets.sexp.Sexp;
+<<<<<<< Updated upstream
+=======
+import java.util.ArrayList;
+import javax.swing.plaf.IconUIResource;
+>>>>>>> Stashed changes
 
 
 public class BasicWorkSheet implements Spreadsheet {
 
   final int height;
   final int width;
+<<<<<<< Updated upstream
   private final Cell[][] currSpreadSheet;
 
   public BasicWorkSheet(int height, int width, Cell[][] worksheet) {
@@ -27,6 +33,21 @@ public class BasicWorkSheet implements Spreadsheet {
 
   public static Builder defaultBuilder() {
     return new Builder();
+=======
+
+  public BasicWorksheet() {
+
+  }
+
+  @Override
+  public Cell getCellAt(Coord coord) {
+    return currSpreadSheet.get(coord.col).get(coord.row);
+  }
+
+  @Override
+  public int getHeight() {
+    return ;
+>>>>>>> Stashed changes
   }
 
   @Override

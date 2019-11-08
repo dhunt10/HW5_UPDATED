@@ -9,7 +9,6 @@ public class Cell {
 
   private Formula contents;
   private Coord coords;
-  private String rawContents;
   private Formula evaluatedData;
 
   public Cell(Coord coords, Formula contents){
