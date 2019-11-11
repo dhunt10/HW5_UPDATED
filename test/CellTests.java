@@ -2,11 +2,14 @@ import static junit.framework.TestCase.assertEquals;
 
 import edu.cs3500.spreadsheets.model.Cell;
 import edu.cs3500.spreadsheets.model.Coord;
+import edu.cs3500.spreadsheets.model.Formula;
 import edu.cs3500.spreadsheets.model.Function;
 import edu.cs3500.spreadsheets.model.reference.Reference;
 import edu.cs3500.spreadsheets.model.values.BooleanValue;
 import edu.cs3500.spreadsheets.model.values.NumValue;
 import edu.cs3500.spreadsheets.model.values.StringValue;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Test;
 
 /**
@@ -40,7 +43,10 @@ public class CellTests {
 
   @Test
   public void testFormula() {
-    Cell test = new Cell(new Coord(1,1), new Function("=(10 + 2)"));
+    List<Formula> lists = new ArrayList<>();
+    lists.add(new NumValue(10));
+    lists.add(new NumValue(2));
+    Cell test = new Cell(new Coord(1,1), new Function("=(SUM 10 + 2)", lists, "SUM"));
     assertEquals(12, test.getContents());
 
   }
@@ -50,7 +56,7 @@ public class CellTests {
 
     Cell test = new Cell(new Coord(1,1), new NumValue(4));
     Cell test2 = new Cell(new Coord(1,2), new NumValue(8));
-    Cell test3 = new Cell(new Coord(1,3), new Function("=(A1 + A2)"));
+    Cell test3 = new Cell(new Coord(1,3), new Function("=(SUM A1 + A2)"));
     assertEquals(12, test3.getContents());
 
   }

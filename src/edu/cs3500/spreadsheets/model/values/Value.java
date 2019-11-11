@@ -6,11 +6,10 @@ import edu.cs3500.spreadsheets.model.Formula;
  * Formula.
  */
 public interface Value extends Formula {
-<<<<<<< HEAD
 
-  void setValue(String value);
-
-=======
+  /**
+   * Setter to set the value of a value object.
+   * @param value value to be set.
+   */
   void setValue(Object value);
->>>>>>> e1b36a44c8cd76964ebb557efdbf37dab1208bd6
 }

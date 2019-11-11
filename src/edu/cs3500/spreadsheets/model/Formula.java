@@ -1,6 +1,7 @@
 package edu.cs3500.spreadsheets.model;
 
 import edu.cs3500.spreadsheets.model.values.Value;
+import java.util.Map;
 
 /**
  * This represents any function, reference, or value that goes into a cell.
@@ -14,5 +15,10 @@ public interface Formula {
   @Override
   public String toString();
 
-  Value evaluate();
+  /**
+   * This evaluates a given cell's formula and returns the final value.
+   * @param mapOfCells this map will be used in the event that a cell contains a reference.
+   * @return a final value to be added as part of the cell's evaluated content.
+   */
+  Value evaluate(Map<Coord, Cell> mapOfCells);
 }

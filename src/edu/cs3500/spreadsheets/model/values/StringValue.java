@@ -1,10 +1,8 @@
 package edu.cs3500.spreadsheets.model.values;
 
-<<<<<<< HEAD
+import edu.cs3500.spreadsheets.model.Cell;
 import edu.cs3500.spreadsheets.model.Coord;
-import edu.cs3500.spreadsheets.model.values.Value;
-=======
->>>>>>> e1b36a44c8cd76964ebb557efdbf37dab1208bd6
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -48,28 +46,19 @@ public class StringValue implements Value {
   }
 
   @Override
-<<<<<<< HEAD
-  public void setValue(String string) {
-    this.string = string;
-=======
   public void setValue(Object string) {
     this.string = string.toString();
   }
 
   @Override
-  public Value evaluate() {
+  public Value evaluate(Map<Coord, Cell> mapOfCells) {
     return this;
->>>>>>> e1b36a44c8cd76964ebb557efdbf37dab1208bd6
   }
 
   @Override
   public int hashCode()  {
     return Objects.hash(string);
   }
-<<<<<<< HEAD
 
-=======
-  
->>>>>>> e1b36a44c8cd76964ebb557efdbf37dab1208bd6
 }
 
