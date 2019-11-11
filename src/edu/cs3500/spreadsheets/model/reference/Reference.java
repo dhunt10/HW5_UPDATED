@@ -1,11 +1,12 @@
 package edu.cs3500.spreadsheets.model.reference;
 
-import edu.cs3500.spreadsheets.model.BasicWorksheet;
+import edu.cs3500.spreadsheets.model.Cell;
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.Formula;
 import edu.cs3500.spreadsheets.model.values.Value;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Reference is a type that references any cell.
@@ -116,11 +117,12 @@ public class Reference implements Formula {
   }
 
   @Override
-  public Value evaluate() {
+  public Value evaluate(Map<Coord, Cell> mapOfCells) {
     List<Value> values = new ArrayList<>();
     for (Coord c : evaluatedRefs) {
-      values.add(BasicWorksheet.getCellAt(c.col, c.row).getContents().evaluate());
-
+      values.add(mapOfCells.get(c).getContents().evaluate(mapOfCells));
     }
+
+    return this.evaluate(mapOfCells);
   }
 }

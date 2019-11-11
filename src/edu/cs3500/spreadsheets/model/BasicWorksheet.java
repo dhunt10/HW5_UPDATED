@@ -1,12 +1,8 @@
 package edu.cs3500.spreadsheets.model;
 
 import edu.cs3500.spreadsheets.model.WorksheetReader.WorksheetBuilder;
-import edu.cs3500.spreadsheets.model.reference.Reference;
-
-import edu.cs3500.spreadsheets.model.values.Value;
 import edu.cs3500.spreadsheets.sexp.Parser;
 import edu.cs3500.spreadsheets.sexp.Sexp;
-import java.text.Normalizer.Form;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,15 +15,18 @@ import java.util.Map;
  */
 public class BasicWorksheet implements Spreadsheet {
 
-  private List<Coord> coordList = new ArrayList<>();
+  private final Map<Coord, Cell> currSpreadSheet;
+  private List<Coord> coordList;
 
   /**
    * This build the worksheet with given list of cells.
    *
    * @param currSpreadSheet array list of array list holding the cells
    */
-  public BasicWorksheet(Map<Coord, Cell> currSpreadSheet) {
+  public BasicWorksheet(Map<Coord, Cell> currSpreadSheet, List<Coord> coordList) {
     this.currSpreadSheet = currSpreadSheet;
+    this.coordList = coordList;
+    getEvaluatedCells();
   }
 
   /**
@@ -39,6 +38,19 @@ public class BasicWorksheet implements Spreadsheet {
     return new Builder();
   }
 
+  /**
+   * Function to run through the map of cells and evaluate each individual cell.
+   * This function is called directly after a spreadsheet has been created and will subsequently
+   * be called after every new cell addition.
+   */
+  public void getEvaluatedCells() {
+
+    for (Coord item : coordList) {
+      Sexp sexp = Parser.parse(currSpreadSheet.get(item).getContents().toString());
+      Formula deliverable = sexp.accept(new SexpToFormula());
+      currSpreadSheet.get(item).setEvaluatedData(deliverable.evaluate(currSpreadSheet));
+    }
+  }
 
   /**
    * This helps us locate the cells in the Arraylist of Arraylist of cells so we can make changes to
@@ -55,21 +67,6 @@ public class BasicWorksheet implements Spreadsheet {
   @Override
   public Map<Coord, Cell> getCurrSpreadSheet() {
     return currSpreadSheet;
-  }
-
-  /*public List<Value> operatorDec(Reference reference) {
-    Reference ref = new Reference(reference.toString());
-    List<Coord> refList = ref.getRefs();
-    List<Value> valueList = new ArrayList<>();
-    for (Coord item : refList) {
-      valueList.add(getEvaluatedCellAt(item));
-    }
-
-    return valueList;
-  }*/
-
-  public Value operatorDec(Value value) {
-    return value;
   }
 
   /**
@@ -105,16 +102,6 @@ public class BasicWorksheet implements Spreadsheet {
 
     }
 
-
-    public void getEvaluatedCells() {
-
-      for (Coord item : coordList) {
-        Sexp sexp = Parser.parse(currSpreadSheet.get(item).getContents().toString());
-        Formula deliverable = sexp.accept(new SexpToFormula());
-        currSpreadSheet.get(item).setEvaluatedData(deliverable.evaluate());
-      }
-    }
-
       /**
        * This creates a builder of a blank cell as a redundancy of the blank cell constructor.
        * @param coord coordinate for new blank cell.
@@ -123,9 +110,15 @@ public class BasicWorksheet implements Spreadsheet {
       public Builder blankCell (Coord coord){
         Cell cell = new Cell(coord);
         currSpreadSheet.put(coord, cell);
+        coordList.add(coord);
         return this;
       }
 
+    /**
+     * Getter to return the value of a given key in the spreadsheet map.
+     * @param coord coordinate of cell you wish to access.
+     * @return the cell of the given coordinate.
+     */
       public Cell getCellAt (Coord coord){
         return currSpreadSheet.get(coord);
       }
@@ -139,7 +132,7 @@ public class BasicWorksheet implements Spreadsheet {
         if (currSpreadSheet.size() == 0) {
           throw new IllegalArgumentException("Null width or height");
         }
-        return new BasicWorksheet(currSpreadSheet);
+        return new BasicWorksheet(currSpreadSheet, coordList);
       }
 
       public Map<Coord, Cell> getCurrSpreadSheet() {

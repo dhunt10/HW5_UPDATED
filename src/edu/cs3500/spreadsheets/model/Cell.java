@@ -1,9 +1,7 @@
 package edu.cs3500.spreadsheets.model;
 
-import edu.cs3500.spreadsheets.model.reference.Reference;
 import edu.cs3500.spreadsheets.model.values.StringValue;
 import edu.cs3500.spreadsheets.model.values.Value;
-import edu.cs3500.spreadsheets.sexp.SList;
 
 
 /**
