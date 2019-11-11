@@ -59,6 +59,6 @@ public class StringValue implements Value {
   public int hashCode()  {
     return Objects.hash(string);
   }
-  
+
 }
 

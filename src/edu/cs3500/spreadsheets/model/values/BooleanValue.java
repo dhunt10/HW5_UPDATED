@@ -48,6 +48,14 @@ public class BooleanValue implements Value {
   }
 
 
+<<<<<<< HEAD
+  @Override
+  public void setValue(String bool) {
+      this.bool = Boolean.parseBoolean(bool);
+  }
+
+=======
+>>>>>>> e1b36a44c8cd76964ebb557efdbf37dab1208bd6
   @Override
   public int hashCode() {
     return Objects.hash(bool);
