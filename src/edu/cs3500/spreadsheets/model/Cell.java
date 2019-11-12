@@ -68,11 +68,12 @@ public class Cell {
 
   public void drawSelf(Graphics2D g2d) {
     g2d.drawRect(coord.col, coord.row, 20, 10);
+    g2d.drawString(this.toString(), coord.col, coord.row);
   }
 
   @Override
   public String toString() {
-    return contents.toString();
+    return evaluatedData.toString();
   }
 
 }
