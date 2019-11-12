@@ -24,6 +24,11 @@ public class StringValue implements Value {
     return String.valueOf(string);
   }
 
+  @Override
+  public Value evaluate() {
+    return null;
+  }
+
 
   @Override
   public boolean equals(Object o) {

@@ -17,6 +17,7 @@ public class Function implements Formula {
 
   Sexp sexp;
   String functionName;
+
   List<Formula> args;
   Map<Coord, Cell> mapOfCells = null;
 

@@ -25,6 +25,11 @@ public class NumValue implements Value {
     return String.valueOf(number);
   }
 
+  @Override
+  public Value evaluate() {
+    return null;
+  }
+
 
   @Override
   public boolean equals(Object o) {
