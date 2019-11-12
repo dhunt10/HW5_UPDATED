@@ -10,7 +10,8 @@ import java.util.Map;
 
 /**
  * Reference is a type that references any cell.
- * A reference can be a reference to single cell or a black of cells.
+ * A reference can be a reference to single cell or a block of cells.
+ * For example: A1 would be a single reference and A1:B7 would be a block of cells.
  */
 public class Reference implements Formula {
 

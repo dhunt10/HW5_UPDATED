@@ -2,6 +2,7 @@ package edu.cs3500.spreadsheets.model;
 
 import edu.cs3500.spreadsheets.model.values.StringValue;
 import edu.cs3500.spreadsheets.model.values.Value;
+import java.awt.Graphics2D;
 
 
 /**
@@ -10,7 +11,7 @@ import edu.cs3500.spreadsheets.model.values.Value;
 public class Cell {
 
   private Formula contents;
-  private Coord coords;
+  private Coord coord;
   private Value evaluatedData;
 
   /**
@@ -19,16 +20,16 @@ public class Cell {
    * @param contents content of the cell, not yet evaluated.
    */
   public Cell(Coord coords, Formula contents) {
-    this.coords = coords;
+    this.coord = coords;
     this.contents = contents;
   }
 
   /**
    * Construtor for a cell that will be blank.
-   * @param coords the coordinates of the cell in currSpreadSheet.
+   * @param coord the coordinates of the cell in currSpreadSheet.
    */
-  public Cell(Coord coords) {
-    this.coords = coords;
+  public Cell(Coord coord) {
+    this.coord = coord;
     this.contents = new StringValue("");
   }
 
@@ -56,8 +57,23 @@ public class Cell {
     return this.evaluatedData.toString();
   }
 
+  /**
+   * Setter to set the final evaluated data to appear to user.
+   * @param value value to be set as the evaluated value.
+   */
   public void setEvaluatedData(Value value) {
     this.evaluatedData = value;
+  }
+
+
+  public void drawSelf(Graphics2D g2d) {
+    g2d.drawRect(coord.col, coord.row, 20, 10);
+    g2d.drawString(this.toString(), coord.col, coord.row);
+  }
+
+  @Override
+  public String toString() {
+    return evaluatedData.toString();
   }
 
 }

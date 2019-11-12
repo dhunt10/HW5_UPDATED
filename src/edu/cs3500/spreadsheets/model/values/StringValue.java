@@ -39,7 +39,7 @@ public class StringValue implements Value {
 
   /**
    * Standard get function.
-   * @return the value of the boolean.
+   * @return the value of the String.
    */
   public String getValue() {
     return this.string;
