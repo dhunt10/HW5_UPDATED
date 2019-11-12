@@ -1,5 +1,8 @@
 package edu.cs3500.spreadsheets.model.values;
 
+import edu.cs3500.spreadsheets.model.Cell;
+import edu.cs3500.spreadsheets.model.Coord;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -49,7 +52,7 @@ public class NumValue implements Value {
   }
 
   @Override
-  public Value evaluate() {
+  public Value evaluate(Map<Coord, Cell> mapOfCells) {
     return this;
   }
 
@@ -57,6 +60,7 @@ public class NumValue implements Value {
    * Setter to set the value.
    * @param number number to be set.
    */
+  @Override
   public void setValue(Object number) {
     this.number = Double.parseDouble(number.toString());
   }

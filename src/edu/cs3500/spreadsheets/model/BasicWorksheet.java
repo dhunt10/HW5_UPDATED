@@ -1,13 +1,12 @@
 package edu.cs3500.spreadsheets.model;
 
 import edu.cs3500.spreadsheets.model.WorksheetReader.WorksheetBuilder;
-import edu.cs3500.spreadsheets.model.reference.Reference;
-
-import edu.cs3500.spreadsheets.model.values.Value;
 import edu.cs3500.spreadsheets.sexp.Parser;
 import edu.cs3500.spreadsheets.sexp.Sexp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This is a worksheet representation that has the basic needs that were
@@ -16,15 +15,18 @@ import java.util.List;
  */
 public class BasicWorksheet implements Spreadsheet {
 
-  private ArrayList<ArrayList<Cell>> currSpreadSheet;
+  private final Map<Coord, Cell> currSpreadSheet;
+  private List<Coord> coordList;
 
   /**
    * This build the worksheet with given list of cells.
    *
    * @param currSpreadSheet array list of array list holding the cells
    */
-  public BasicWorksheet(ArrayList<ArrayList<Cell>> currSpreadSheet) {
+  public BasicWorksheet(Map<Coord, Cell> currSpreadSheet, List<Coord> coordList) {
     this.currSpreadSheet = currSpreadSheet;
+    this.coordList = coordList;
+    getEvaluatedCells();
   }
 
   /**
@@ -36,6 +38,19 @@ public class BasicWorksheet implements Spreadsheet {
     return new Builder();
   }
 
+  /**
+   * Function to run through the map of cells and evaluate each individual cell.
+   * This function is called directly after a spreadsheet has been created and will subsequently
+   * be called after every new cell addition.
+   */
+  public void getEvaluatedCells() {
+
+    for (Coord item : coordList) {
+      Sexp sexp = Parser.parse(currSpreadSheet.get(item).getContents().toString());
+      Formula deliverable = sexp.accept(new SexpToFormula());
+      currSpreadSheet.get(item).setEvaluatedData(deliverable.evaluate(currSpreadSheet));
+    }
+  }
 
   /**
    * This helps us locate the cells in the Arraylist of Arraylist of cells so we can make changes to
@@ -46,28 +61,12 @@ public class BasicWorksheet implements Spreadsheet {
    */
   @Override
   public Cell getCellAt(Coord coord) {
-    return currSpreadSheet.get(coord.col - 1).get(coord.row - 1);
+    return currSpreadSheet.get(coord);
   }
 
-  public Value getEvaluatedCellAt(Coord coord) {
-    Sexp sexp = Parser.parse(getCellAt(coord).getContents().toString());
-    Formula deliverable = sexp.accept(new SexpToFormula());
-    return deliverable.evaluate();
-  }
-
-  public List<Value> operatorDec(Reference reference) {
-    Reference ref = new Reference(reference.toString());
-    List<Coord> refList = ref.getRefs();
-    List<Value> valueList = new ArrayList<>();
-    for (Coord item : refList) {
-      valueList.add(getEvaluatedCellAt(item));
-    }
-
-    return valueList;
-  }
-
-  public Value operatorDec(Value value) {
-    return value;
+  @Override
+  public Map<Coord, Cell> getCurrSpreadSheet() {
+    return currSpreadSheet;
   }
 
   /**
@@ -75,52 +74,9 @@ public class BasicWorksheet implements Spreadsheet {
    */
   public static final class Builder implements WorksheetBuilder<Spreadsheet> {
 
-    //set to zero to test empty worksheet
-    private int height = 26;
-    private int width = 26;
-    private ArrayList<ArrayList<Cell>> currSpreadSheet = new ArrayList<>();
+    private Map<Coord, Cell> currSpreadSheet = new HashMap<Coord, Cell>();
+    private List<Coord> coordList = new ArrayList<>();
 
-
-    /**
-     * This was meant for us to set the size of the list, still trying to figure out if needed and
-     * this is left so we can try and implement a set height and width of a spreadsheet.
-     *
-     * @param height height.
-     * @return a Builde.
-     */
-    public Builder setHeight(int height) {
-      if (height < 0 || height > 999) {
-        throw new IllegalArgumentException("Height cannot be negative");
-      }
-      this.height = height;
-      return this;
-    }
-
-    /**
-     * This was meant for us to set the size of the list, still trying to figure out if needed and
-     * this is left so we can try and implement a set height and width of a spreadsheet.
-     *
-     * @param width width.
-     * @return a Builder
-     */
-    public Builder setWidth(int width) {
-      if (width < 0 || width > 999) {
-        throw new IllegalArgumentException("Height cannot be negative");
-      }
-      this.width = width;
-      return this;
-    }
-
-    /**
-     * This was to set the list of cells, we need to work on the implementation of this but we know
-     * it will be needed.
-     *
-     * @return a Builder
-     */
-    public Builder setGrid() {
-      currSpreadSheet = new ArrayList<>();
-      return this;
-    }
 
     /**
      * This is a function that creates a cell as part of the builder to create a worksheet.
@@ -140,7 +96,8 @@ public class BasicWorksheet implements Spreadsheet {
       Formula formula = sexp.accept(new SexpToFormula());
 
       Cell cell = new Cell(coord, formula);
-      cell.setEvaluatedData(getEvaluatedCellAt(coord));
+      currSpreadSheet.put(coord, cell);
+      coordList.add(coord);
       return this;
 
     }
@@ -152,12 +109,18 @@ public class BasicWorksheet implements Spreadsheet {
        */
       public Builder blankCell (Coord coord){
         Cell cell = new Cell(coord);
-        currSpreadSheet.get(coord.col - 1).add(coord.row - 1, cell);
+        currSpreadSheet.put(coord, cell);
+        coordList.add(coord);
         return this;
       }
 
-      public String getCellAt ( int col, int row){
-        return currSpreadSheet.get(col).get(row).getContents().toString();
+    /**
+     * Getter to return the value of a given key in the spreadsheet map.
+     * @param coord coordinate of cell you wish to access.
+     * @return the cell of the given coordinate.
+     */
+      public Cell getCellAt (Coord coord){
+        return currSpreadSheet.get(coord);
       }
 
       /**
@@ -166,11 +129,16 @@ public class BasicWorksheet implements Spreadsheet {
        */
       @Override
       public BasicWorksheet createWorksheet () {
-        if (currSpreadSheet.size() == 0 || currSpreadSheet.get(0).size() == 0) {
+        if (currSpreadSheet.size() == 0) {
           throw new IllegalArgumentException("Null width or height");
         }
-        return new BasicWorksheet(currSpreadSheet);
+        return new BasicWorksheet(currSpreadSheet, coordList);
       }
+
+      public Map<Coord, Cell> getCurrSpreadSheet() {
+        return currSpreadSheet;
+      }
+
 
 
     }

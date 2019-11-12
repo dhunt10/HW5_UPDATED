@@ -1,14 +1,22 @@
 package edu.cs3500.spreadsheets;
 
 import edu.cs3500.spreadsheets.model.BasicWorksheet;
+import edu.cs3500.spreadsheets.model.BasicWorksheet.Builder;
+import edu.cs3500.spreadsheets.model.Cell;
+import edu.cs3500.spreadsheets.model.Coord;
+import edu.cs3500.spreadsheets.model.Formula;
 import edu.cs3500.spreadsheets.model.Spreadsheet;
 import edu.cs3500.spreadsheets.model.WorksheetReader;
 import edu.cs3500.spreadsheets.view.GraphicsView;
 import edu.cs3500.spreadsheets.view.IView;
 import edu.cs3500.spreadsheets.view.TextView;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * The main class for our program.
@@ -61,9 +69,37 @@ public class BeyondGood {
     createSpreadSheet(infile, incell);
   }
 
+    /**
+   * Function that creates a spreadsheet by taking in a file.
+   * @param file the name of the file.
+   * @param cell cell.
+   * @throws FileNotFoundException
+   */
   private static void createSpreadSheet(File file, String cell) throws FileNotFoundException {
+    Builder b = new Builder();
+    BufferedReader reader;
+    try {
+      reader = new BufferedReader(new FileReader(file));
+      String line = reader.readLine();
+      while (line != null) {
+        line = reader.readLine();
+        String[] phrase = line.split(" ", 2);
+        String coordinate = phrase[0];
+        String formula = phrase[1];
+        int col = Coord.colNameToIndex(String.valueOf(coordinate.charAt(0)));
+        int row = Integer.parseInt(String.valueOf(coordinate.charAt(1)));
+        b.createCell(col, row, formula);
+      }
+      reader.close();
+    }
+    catch (IOException e) {
+      throw new IllegalArgumentException(e);
+    }
     FileReader fileReader = new FileReader(file);
     Spreadsheet s = WorksheetReader.read(BasicWorksheet.defaultBuilder(), fileReader);
+    Map<Coord, Cell> board = s.getCurrSpreadSheet();
+
+    b.createWorksheet();
   }
 
   public static IView createView(String type, Spreadsheet s) {

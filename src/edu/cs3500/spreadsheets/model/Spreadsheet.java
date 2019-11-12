@@ -1,5 +1,7 @@
 package edu.cs3500.spreadsheets.model;
 
+import java.util.Map;
+
 /**
  * This interface is for all types of worksheets, which are made up of cells.
  */
@@ -12,8 +14,9 @@ public interface Spreadsheet {
    */
   public Cell getCellAt(Coord coord);
 
-  public int getHeight();
-  public int getWidth();
-
-
+  /**
+   * Getter to return the current spreadsheet.
+   * @return the current spreadsheet in map form.
+   */
+  Map<Coord, Cell> getCurrSpreadSheet();
 }

@@ -1,14 +1,17 @@
 package edu.cs3500.spreadsheets.model.reference;
 
+import edu.cs3500.spreadsheets.model.Cell;
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.Formula;
 import edu.cs3500.spreadsheets.model.values.Value;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Reference is a type that references any cell.
- * A reference can be a reference to single cell or a black of cells.
+ * A reference can be a reference to single cell or a block of cells.
+ * For example: A1 would be a single reference and A1:B7 would be a block of cells.
  */
 public class Reference implements Formula {
 
@@ -78,11 +81,7 @@ public class Reference implements Formula {
     else if (firstBound.charAt(1) == secondBound.charAt(1)) {
       for (int i = 0; i < zeroDiff; i++) {
         StringBuilder sb = new StringBuilder();
-<<<<<<< HEAD
-        sb.append(firstBound.charAt(0)+ i);
-=======
         sb.append((char) firstBound.charAt(0) + 1);
->>>>>>> 2e10a30e1c2a3d33c1fb360ac7fcc72f18613582
         sb.append(firstBound.charAt(1));
         bounds.add(sb.toString());
       }
@@ -119,7 +118,12 @@ public class Reference implements Formula {
   }
 
   @Override
-  public Value evaluate() {
-    return null;
+  public Value evaluate(Map<Coord, Cell> mapOfCells) {
+    List<Value> values = new ArrayList<>();
+    for (Coord c : evaluatedRefs) {
+      values.add(mapOfCells.get(c).getContents().evaluate(mapOfCells));
+    }
+
+    return this.evaluate(mapOfCells);
   }
 }
