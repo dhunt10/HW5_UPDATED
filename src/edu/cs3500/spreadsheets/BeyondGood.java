@@ -83,5 +83,5 @@ public class BeyondGood {
     Map<Coord, Cell> board = s.getCurrSpreadSheet();
 
     b.createWorksheet();
-    }
+  }
 }
