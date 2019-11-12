@@ -2,6 +2,7 @@ package edu.cs3500.spreadsheets.model;
 
 import edu.cs3500.spreadsheets.model.values.StringValue;
 import edu.cs3500.spreadsheets.model.values.Value;
+import edu.cs3500.spreadsheets.sexp.SList;
 import java.awt.Graphics2D;
 
 
@@ -31,6 +32,7 @@ public class Cell {
   public Cell(Coord coord) {
     this.coord = coord;
     this.contents = new StringValue("");
+    this.evaluatedData = new StringValue("");
   }
 
   /**
@@ -64,7 +66,6 @@ public class Cell {
   public void setEvaluatedData(Value value) {
     this.evaluatedData = value;
   }
-
 
   public void drawSelf(Graphics2D g2d) {
     g2d.drawRect(coord.col, coord.row, 20, 10);

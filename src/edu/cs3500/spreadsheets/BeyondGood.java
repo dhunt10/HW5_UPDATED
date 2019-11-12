@@ -7,6 +7,9 @@ import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.Formula;
 import edu.cs3500.spreadsheets.model.Spreadsheet;
 import edu.cs3500.spreadsheets.model.WorksheetReader;
+import edu.cs3500.spreadsheets.view.GraphicsView;
+import edu.cs3500.spreadsheets.view.IView;
+import edu.cs3500.spreadsheets.view.TextView;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,7 +28,9 @@ public class BeyondGood {
    */
   public static void main(String[] args) throws FileNotFoundException {
     File infile = null;
+    File outfile = null;
     String incell = null;
+    String view = null;
     for (int i = 0; i < args.length; i++) {
       switch (args[i]) {
         case("-in"):
@@ -42,17 +47,29 @@ public class BeyondGood {
           incell = args[i + 1];
           i++;
           break;
+        case("-save"):
+          if(i == args.length - 1){
+            throw new IllegalArgumentException("Need a file name to save to");
+          }
+          outfile = new File(args[i+1]);
+          view = "text";
+          i++;
+          break;
+        case("-gui"):
+          view = "graphic";
+          break;
         default:
           throw new IllegalArgumentException("This is not how you use our application tough guy");
       }
     }
-    if (infile == null || incell == null) {
+    if (infile == null && incell == null) {
       throw new IllegalArgumentException("bro give us some inputs to work with");
     }
+
     createSpreadSheet(infile, incell);
   }
 
-  /**
+    /**
    * Function that creates a spreadsheet by taking in a file.
    * @param file the name of the file.
    * @param cell cell.
@@ -83,5 +100,13 @@ public class BeyondGood {
     Map<Coord, Cell> board = s.getCurrSpreadSheet();
 
     b.createWorksheet();
+  }
+
+  public static IView createView(String type, Spreadsheet s) {
+    switch (type) {
+      case("text"): return new TextView(s.getCurrSpreadSheet(), s.getX(), s.getY(), s.getHeight(), s.getWidth());
+      case("graphic"): return new GraphicsView(s.getCurrSpreadSheet(), s.getX(), s.getY(), s.getHeight(), s.getWidth());
+      default: throw new IllegalArgumentException("This type of view is not supported");
+    }
   }
 }

@@ -27,6 +27,11 @@ public class BooleanValue implements Value {
   }
 
   @Override
+  public Value evaluate() {
+    return null;
+  }
+
+  @Override
   public boolean equals(Object o) {
     if (this == o) {
       return true;
