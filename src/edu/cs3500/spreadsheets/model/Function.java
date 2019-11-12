@@ -1,25 +1,5 @@
 package edu.cs3500.spreadsheets.model;
 
-<<<<<<< HEAD
-import edu.cs3500.spreadsheets.sexp.Sexp;
-
-public class Function implements Formula {
-  String formula;
-  Sexp rawFormula;
-
-  private Function(Sexp sexp) {
-
-  }
-
-  @Override
-  public void evaluate() {
-
-  }
-
-  @Override
-  public void getFormula(Coord coord) {
-
-=======
 import edu.cs3500.spreadsheets.model.values.BooleanValue;
 import edu.cs3500.spreadsheets.model.values.NumValue;
 import edu.cs3500.spreadsheets.model.values.StringValue;
@@ -99,6 +79,5 @@ public class Function implements Formula {
       throw new IllegalArgumentException("Not a valid operator");
     }
 
->>>>>>> e1b36a44c8cd76964ebb557efdbf37dab1208bd6
   }
 }

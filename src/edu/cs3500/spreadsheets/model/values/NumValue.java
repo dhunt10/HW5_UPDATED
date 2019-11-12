@@ -55,6 +55,7 @@ public class NumValue implements Value {
    * Setter to set the value.
    * @param number number to be set.
    */
+  @Override
   public void setValue(Object number) {
     this.number = Double.parseDouble(number.toString());
   }
@@ -62,11 +63,6 @@ public class NumValue implements Value {
   @Override
   public int hashCode() {
     return Objects.hash(number);
-  }
-
-  @Override
-  public void setValue(String value) {
-
   }
 }
 
