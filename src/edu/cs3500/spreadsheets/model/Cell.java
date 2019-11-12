@@ -56,6 +56,10 @@ public class Cell {
     return this.evaluatedData.toString();
   }
 
+  /**
+   * Setter to set the final evaluated data to appear to user.
+   * @param value value to be set as the evaluated value.
+   */
   public void setEvaluatedData(Value value) {
     this.evaluatedData = value;
   }

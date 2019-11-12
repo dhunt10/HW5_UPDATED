@@ -1,6 +1,5 @@
 package edu.cs3500.spreadsheets.model;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -14,5 +13,10 @@ public interface Spreadsheet {
    * @return the cell at the specified coordinate.
    */
   public Cell getCellAt(Coord coord);
+
+  /**
+   * Getter to return the current spreadsheet.
+   * @return the current spreadsheet in map form.
+   */
   Map<Coord, Cell> getCurrSpreadSheet();
 }

@@ -20,12 +20,22 @@ public class Function implements Formula {
   List<Formula> args;
   Map<Coord, Cell> mapOfCells = null;
 
+  /**
+   * Constructor for a function.
+   * @param item raw string to be parsed.
+   * @param args list of all the arguments in the function.
+   * @param functionName the name of the function to perform.
+   */
   public Function(String item, List<Formula> args, String functionName) {
     this.args = args;
     sexp = Parser.parse(item);
     this.functionName = functionName;
   }
 
+  /**
+   * Gets the current sexp.
+   * @return the sexp.
+   */
   public Sexp getSexp() {
     return sexp;
   }
@@ -42,6 +52,11 @@ public class Function implements Formula {
   }
 
 
+  /**
+   * Helper to iterate through list of values, depending on the formula name.
+   * @param values list of values to be operated on.
+   * @return returns a final value to be set as evaluated value.
+   */
   public Value evaluateHelper(List<Value> values) {
     Sexp sexp = Parser.parse(values.toString());
     if (this.functionName == "SUM") {

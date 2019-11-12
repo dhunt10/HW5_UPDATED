@@ -52,11 +52,17 @@ public class BeyondGood {
     createSpreadSheet(infile, incell);
   }
 
+  /**
+   * Function that creates a spreadsheet by taking in a file.
+   * @param file the name of the file.
+   * @param cell cell.
+   * @throws FileNotFoundException
+   */
   private static void createSpreadSheet(File file, String cell) throws FileNotFoundException {
     Builder b = new Builder();
     BufferedReader reader;
     try {
-      reader = new BufferedReader(new FileReader("filename.txt"));
+      reader = new BufferedReader(new FileReader(file));
       String line = reader.readLine();
       while (line != null) {
         line = reader.readLine();
