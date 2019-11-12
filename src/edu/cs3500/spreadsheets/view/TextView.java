@@ -11,6 +11,8 @@ public class TextView implements IView {
   Map<Coord, Cell> sheet;
   int width;
   int height;
+  int x;
+  int y;
 
   public TextView( Map<Coord, Cell> sheet,
       int width, int height) {
@@ -41,13 +43,9 @@ public class TextView implements IView {
   public String buildTextView() {
     StringBuilder output = new StringBuilder();
     String lineSeparator = System.getProperty("line.separator");
-    for (String s: types.keySet()) {
-      output.append("shape " + s + " " + types.get(s) + lineSeparator);
-      for (InstructionRead i : instructions.get(s)) {
-        output.append(print(i, s, i.getType()));
-      }
+    for (Coord c: sheet.keySet()) {
+      output.append( c.toString() + " " + sheet.get(c).toString() + lineSeparator);
     }
     return output.toString();
-  }
   }
 }

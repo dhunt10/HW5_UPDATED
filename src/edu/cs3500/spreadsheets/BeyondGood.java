@@ -58,8 +58,6 @@ public class BeyondGood {
       throw new IllegalArgumentException("bro give us some inputs to work with");
     }
 
-
-
     createSpreadSheet(infile, incell);
   }
 
@@ -70,8 +68,8 @@ public class BeyondGood {
 
   public static IView createView(String type, Spreadsheet s) {
     switch (type) {
-      case("text"): return new TextView();
-      case("graphic"): return new GraphicsView();
+      case("text"): return new TextView(s.getCells(), s.getX(), s.getY(), s.getHeight(), s.getWidth());
+      case("graphic"): return new GraphicsView(s.getCells(), s.getX(), s.getY(), s.getHeight(), s.getWidth());
       default: throw new IllegalArgumentException("This type of view is not supported");
     }
   }
