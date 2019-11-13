@@ -4,7 +4,6 @@ import edu.cs3500.spreadsheets.model.BasicWorksheet;
 import edu.cs3500.spreadsheets.model.BasicWorksheet.Builder;
 import edu.cs3500.spreadsheets.model.Cell;
 import edu.cs3500.spreadsheets.model.Coord;
-import edu.cs3500.spreadsheets.model.Formula;
 import edu.cs3500.spreadsheets.model.Spreadsheet;
 import edu.cs3500.spreadsheets.model.WorksheetReader;
 import edu.cs3500.spreadsheets.view.GraphicsView;
@@ -15,7 +14,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Map;
 
 /**
