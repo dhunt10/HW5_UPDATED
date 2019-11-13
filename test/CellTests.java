@@ -17,7 +17,7 @@ import org.junit.Test;
  */
 public class CellTests {
 
-  @Test
+  /*@Test
   public void testBoolean() {
     Cell test = new Cell(new Coord(1, 1), new BooleanValue(false));
     assertEquals("false", test.getContents().toString());
@@ -103,7 +103,7 @@ public class CellTests {
     Cell test = new Cell(new Coord(1,1), new Function("=(SUM 10 TRUE)"));
     assertEquals(12, test.getContents());
 
-  }
+  }*/
 
 
 

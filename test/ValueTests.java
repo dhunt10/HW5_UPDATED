@@ -23,7 +23,7 @@ public class ValueTests {
     lists.add(new NumValue(10));
     lists.add(new NumValue(2));
 
-    Cell test = new Cell(new Coord(1,1), new Function("=(SUM 10 2)", lists, "SUM"));
+    Cell test = new Cell(new Coord(1,1), new Function("=(< 10 2)", lists, "SUM"));
     assertEquals(12, test.getContents());
   }
 

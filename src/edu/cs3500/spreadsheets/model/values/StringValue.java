@@ -26,7 +26,7 @@ public class StringValue implements Value {
 
   @Override
   public Value evaluate() {
-    return null;
+    return this;
   }
 
 

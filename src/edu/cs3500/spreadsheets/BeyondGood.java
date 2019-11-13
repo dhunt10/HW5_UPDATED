@@ -25,7 +25,12 @@ public class BeyondGood {
    * @param args any command-line arguments.
    */
   public static void main(String[] args) throws FileNotFoundException {
-    File infile = null;
+    File infile = new File("/Users/darinhunt/Desktop/OOD/HW55555/HW5_UPDATED/test/test.txt");
+    try {
+      infile.createNewFile();
+    } catch (IOException e) {
+
+    }
     File outfile = null;
     String incell = null;
     String view = null;
@@ -80,13 +85,16 @@ public class BeyondGood {
       reader = new BufferedReader(new FileReader(file));
       String line = reader.readLine();
       while (line != null) {
-        line = reader.readLine();
+        System.out.println(line);
         String[] phrase = line.split(" ", 2);
         String coordinate = phrase[0];
         String formula = phrase[1];
         int col = Coord.colNameToIndex(String.valueOf(coordinate.charAt(0)));
+
+
         int row = Integer.parseInt(String.valueOf(coordinate.charAt(1)));
         b.createCell(col, row, formula);
+        line = reader.readLine();
       }
       reader.close();
     }
@@ -96,17 +104,18 @@ public class BeyondGood {
     FileReader fileReader = new FileReader(file);
     Spreadsheet s = WorksheetReader.read(BasicWorksheet.defaultBuilder(), fileReader);
     Map<Coord, Cell> board = s.getCurrSpreadSheet();
+    System.out.println(board.keySet());
 
     b.createWorksheet();
 
-    IView v = createView(type, s);
+    IView v = createView("graphic", s);
     v.display();
   }
 
   public static IView createView(String type, Spreadsheet s) {
     switch (type) {
       case("text"): return new TextView(s.getCurrSpreadSheet(), 5, 5);
-      case("graphic"): return new GraphicsView(s.getCurrSpreadSheet(), 5, 5);
+      case("graphic"): return new GraphicsView(s.getCurrSpreadSheet(), 800, 800);
       default: throw new IllegalArgumentException("This type of view is not supported");
     }
   }
