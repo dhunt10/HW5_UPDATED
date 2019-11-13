@@ -66,7 +66,7 @@ public class BeyondGood {
       throw new IllegalArgumentException("bro give us some inputs to work with");
     }
 
-    createSpreadSheet(infile, incell);
+    createSpreadSheet(infile, incell, view);
   }
 
     /**
@@ -75,7 +75,7 @@ public class BeyondGood {
    * @param cell cell.
    * @throws FileNotFoundException
    */
-  private static void createSpreadSheet(File file, String cell) throws FileNotFoundException {
+  private static void createSpreadSheet(File file, String cell, String type) throws FileNotFoundException {
     Builder b = new Builder();
     BufferedReader reader;
     try {
@@ -100,12 +100,15 @@ public class BeyondGood {
     Map<Coord, Cell> board = s.getCurrSpreadSheet();
 
     b.createWorksheet();
+
+    IView v = createView(type, s);
+    v.display();
   }
 
   public static IView createView(String type, Spreadsheet s) {
     switch (type) {
-      case("text"): return new TextView(s.getCells(), s.getX(), s.getY(), s.getHeight(), s.getWidth());
-      case("graphic"): return new GraphicsView(s.getCells(), s.getX(), s.getY(), s.getHeight(), s.getWidth());
+      case("text"): return new TextView(s.getCurrSpreadSheet(), 5, 5);
+      case("graphic"): return new GraphicsView(s.getCurrSpreadSheet(), 5, 5);
       default: throw new IllegalArgumentException("This type of view is not supported");
     }
   }
