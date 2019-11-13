@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JPanel;
 
+/**
+ *
+ */
 public class GraphicsPanel extends JPanel {
   private Map<Coord, Cell> curr;
 
@@ -22,6 +25,10 @@ public class GraphicsPanel extends JPanel {
     this.setBackground(Color.WHITE);
   }
 
+  /**
+   *
+   * @param curr
+   */
   public void setcurrState(Map<Coord, Cell> curr) {
     this.curr = curr;
   }

@@ -65,7 +65,9 @@ public class BasicWorksheet implements Spreadsheet {
   }
 
   /**
-   *
+   * This function is called to ensure that there are no null spots in our spreadsheet.
+   * What this does is take the largest row and largest column and fill every
+   * 'spot' in our spreadsheet (represented as a map) with a cell with no contents.
    */
   public void fillBlank() {
 

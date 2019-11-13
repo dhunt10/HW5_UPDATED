@@ -4,6 +4,9 @@ import edu.cs3500.spreadsheets.model.Cell;
 import edu.cs3500.spreadsheets.model.Coord;
 import java.util.Map;
 
+/**
+ *
+ */
 public class GraphicsView implements IView{
   GraphicsFrame frame;
   Map<Coord, Cell> sheet;
@@ -12,6 +15,12 @@ public class GraphicsView implements IView{
   int x;
   int y;
 
+  /**
+   *
+   * @param sheet
+   * @param width
+   * @param height
+   */
   public GraphicsView(Map<Coord, Cell> sheet, int width, int height) {
     this.sheet = sheet;
     this.width = width;
