@@ -28,7 +28,7 @@ public class BooleanValue implements Value {
 
   @Override
   public Value evaluate() {
-    return null;
+    return this;
   }
 
   @Override
