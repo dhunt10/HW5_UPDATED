@@ -8,10 +8,20 @@ import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
+/**
+ *
+ *
+ */
 public class GraphicsFrame extends JFrame {
 
   private GraphicsPanel graphicsPanel;
 
+  /**
+   *
+   * @param curr
+   * @param width
+   * @param height
+   */
   public GraphicsFrame(Map<Coord, Cell> curr,
       int width, int height) {
     super();
@@ -29,11 +39,18 @@ public class GraphicsFrame extends JFrame {
     this.pack();
   }
 
+  /**
+   *
+   * @param curr
+   */
   public void updatecurrState(Map<Coord, Cell> curr) {
     graphicsPanel.setcurrState(curr);
     this.repaint();
   }
 
+  /**
+   *
+   */
   public void display() {
     this.setVisible(true);
   }

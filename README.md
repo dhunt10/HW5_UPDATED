@@ -13,6 +13,7 @@
 - [ ] Controller Test
 - [ ] Additional View 
 - [ ] Additional View Test
+------------------------------------------------------------------
 
 ##### 3 inputs are possible for cells
 **Values** 
@@ -22,7 +23,7 @@
   booleans
   strings
   ````
-**Formulas**
+**Formulas** 
  - Formulas can include:
   ````
   SUM
