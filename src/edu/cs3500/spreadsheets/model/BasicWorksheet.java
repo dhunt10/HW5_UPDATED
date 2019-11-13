@@ -26,6 +26,7 @@ public class BasicWorksheet implements Spreadsheet {
   public BasicWorksheet(Map<Coord, Cell> currSpreadSheet, List<Coord> coordList) {
     this.currSpreadSheet = currSpreadSheet;
     this.coordList = coordList;
+    fillBlank();
     getEvaluatedCells();
   }
 
@@ -50,6 +51,48 @@ public class BasicWorksheet implements Spreadsheet {
       Formula deliverable = sexp.accept(new SexpToFormula());
       currSpreadSheet.get(item).setEvaluatedData(deliverable.evaluate(currSpreadSheet));
     }
+  }
+
+  /**
+   * This creates a builder of a blank cell as a redundancy of the blank cell constructor.
+   * @param coord coordinate for new blank cell.
+   * @return a Builder
+   */
+  public void blankCell (Coord coord){
+    Cell cell = new Cell(coord);
+    currSpreadSheet.put(coord, cell);
+    coordList.add(coord);
+  }
+
+  /**
+   *
+   */
+  public void fillBlank() {
+
+    int highRow = 0;
+    int highCol = 0;
+    for (Coord coord : coordList) {
+      if (coord.col > highCol) {
+        highCol = coord.col;
+      }
+
+      if (coord.row > highRow) {
+        highRow = coord.row;
+      }
+    }
+
+    for (int i = highCol; i > 0; i--) {
+      for (int j = highRow; j > 0; j--) {
+        try {
+          getCellAt(new Coord(i, j));
+        }
+        catch (NullPointerException e) {
+          blankCell(new Coord(i,j));
+        }
+      }
+
+    }
+
   }
 
   /**
@@ -101,18 +144,6 @@ public class BasicWorksheet implements Spreadsheet {
       return this;
 
     }
-
-      /**
-       * This creates a builder of a blank cell as a redundancy of the blank cell constructor.
-       * @param coord coordinate for new blank cell.
-       * @return a Builder
-       */
-      public Builder blankCell (Coord coord){
-        Cell cell = new Cell(coord);
-        currSpreadSheet.put(coord, cell);
-        coordList.add(coord);
-        return this;
-      }
 
     /**
      * Getter to return the value of a given key in the spreadsheet map.

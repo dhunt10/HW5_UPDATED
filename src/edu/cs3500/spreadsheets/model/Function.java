@@ -43,7 +43,6 @@ public class Function implements Formula {
 
   @Override
   public Value evaluate(Map<Coord, Cell> mapOfCells) {
-    String functionName = this.functionName;
     List<Value> argValues = new ArrayList<>();
     for (Formula f: this.args) {
       argValues.add(f.evaluate(mapOfCells));
@@ -59,7 +58,6 @@ public class Function implements Formula {
    * @return returns a final value to be set as evaluated value.
    */
   public Value evaluateHelper(List<Value> values) {
-    Sexp sexp = Parser.parse(values.toString());
     if (this.functionName == "SUM") {
       double ans = 0;
       for (Formula a : values) {
