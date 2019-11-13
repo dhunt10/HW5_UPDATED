@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface iFormulaVisitor extends iFunc<List<Value>, Value>{
 
-  R visitBooleanValue(BooleanValue b)
+  R visitBooleanValue(BooleanValue b);
 }
