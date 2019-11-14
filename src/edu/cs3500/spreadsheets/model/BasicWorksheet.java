@@ -62,7 +62,8 @@ public class BasicWorksheet implements Spreadsheet {
       }
 
       Formula deliverable = sexp.accept(new SexpToFormula());
-      currSpreadSheet.get(item).setEvaluatedData(deliverable.evaluate(currSpreadSheet, sexp.toString().split(" ")[0]));
+      currSpreadSheet.get(item).setEvaluatedData(deliverable.evaluate(currSpreadSheet,
+          sexp.toString().split(" ")[0]));
     }
   }
 
@@ -102,6 +103,11 @@ public class BasicWorksheet implements Spreadsheet {
 
   }
 
+  /**
+   * This function will be used to fill the 'empty' cells with cells that are blank and
+   * have no values.
+   * @return int, the highest value row.
+   */
   public int getMaxRow() {
     int highRow = 0;
 
@@ -113,6 +119,11 @@ public class BasicWorksheet implements Spreadsheet {
     return highRow;
   }
 
+  /**
+   * This function will be used to fill the 'empty' cells with cells that are blank and
+   * have no values.
+   * @return int, the highest value column.
+   */
   public int getMaxCol() {
     int highCol = 0;
 
@@ -205,7 +216,5 @@ public class BasicWorksheet implements Spreadsheet {
     public Map<Coord, Cell> getCurrSpreadSheet() {
       return currSpreadSheet;
     }
-
-
   }
 }

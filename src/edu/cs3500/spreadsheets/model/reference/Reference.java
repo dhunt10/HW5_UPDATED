@@ -90,7 +90,8 @@ public class Reference implements Formula {
     String[] coord1 = firstBound.split("(?<=\\D)(?=\\d)", 2);
     String[] coord2 = secondBound.split("(?<=\\D)(?=\\d)", 2);
 
-    int zeroDiff = Math.abs((char) (((coord1[0].charAt(coord1[0].length() - 1)) + 1)) - (char) (((coord2[0].charAt(coord2[0].length() - 1)) + 1)));
+    int zeroDiff = Math.abs((char) (((coord1[0].charAt(coord1[0].length() - 1)) + 1))
+        - (char) (((coord2[0].charAt(coord2[0].length() - 1)) + 1)));
     zeroDiff = zeroDiff + 1;
     int oneDiff = Math.abs(Integer.parseInt(coord1[1]) - Integer.parseInt(coord2[1])) + 1;
 
