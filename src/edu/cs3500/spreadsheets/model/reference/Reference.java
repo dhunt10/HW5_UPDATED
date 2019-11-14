@@ -87,33 +87,37 @@ public class Reference implements Formula {
     String[] coord2 = secondBound.split("(?<=\\D)(?=\\d)", 2);
 
     //int zeroDiff = Math.abs(firstBound.charAt(0) - secondBound.charAt(0)) + 1;
-    int zeroDiff = Math.abs((char) (coord1[0].charAt(coord1[0].length() - 1)));
+    int zeroDiff = Math.abs((char) (((coord1[0].charAt(coord1[0].length() - 1)) + 1)) - (char) (((coord2[0].charAt(coord2[0].length() - 1)) + 1)));
+    zeroDiff = zeroDiff + 1;
     int oneDiff = Math.abs(Integer.parseInt(coord1[1]) - Integer.parseInt(coord2[1])) + 1;
 
-    System.out.println((char) ((coord1[0].charAt(coord1[0].length() - 1)) + 1));
+    char coordOneValue = (char) (((coord1[0].charAt(coord1[0].length() - 1)) + 1));
+    char coordTwoValue = (char) (((coord2[0].charAt(coord2[0].length() - 1)) + 1));
 
-    if (firstBound.charAt(0) == secondBound.charAt(0)) {
+
+    System.out.println(coord2[1]);
+
+    if (coordOneValue == coordTwoValue) {
       for (int i = 0; i < oneDiff; i++) {
         StringBuilder sb = new StringBuilder();
-        sb.append(firstBound.charAt(0));
-        //sb.append(Integer.parseInt(String.valueOf(firstBound.charAt(1))) + i);
+        sb.append((char) (((coord1[0].charAt(coord1[0].length() - 1)) + i - i)));
         sb.append(Integer.parseInt(coord1[1]) + i);
         bounds.add(sb.toString());
       }
 
-    } else if (firstBound.charAt(1) == secondBound.charAt(1)) {
+    } else if (coord1[1].equals(coord2[1])) {
       for (int i = 0; i < zeroDiff; i++) {
         StringBuilder sb = new StringBuilder();
-        sb.append((char) ((firstBound.charAt(0)) + i));
-        sb.append(firstBound.charAt(1));
+        sb.append((char) (((coord1[0].charAt(coord1[0].length() - 1)) + i)));
+        sb.append(Integer.parseInt(coord1[1]));
         bounds.add(sb.toString());
       }
     } else {
       for (int i = 0; i < zeroDiff; i++) {
         for (int j = 0; j < oneDiff; j++) {
           StringBuilder sb = new StringBuilder();
-          sb.append((char) ((firstBound.charAt(0)) + j));
-          sb.append(Integer.parseInt(String.valueOf(firstBound.charAt(1))) + i);
+          System.out.println(sb.append((char) (((coord1[0].charAt(coord1[0].length() - 1)) + i))));
+          sb.append(Integer.parseInt(coord1[1]) + j);
           bounds.add(sb.toString());
         }
       }
