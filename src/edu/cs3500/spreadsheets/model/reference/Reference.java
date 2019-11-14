@@ -86,8 +86,11 @@ public class Reference implements Formula {
     String[] coord1 = firstBound.split("(?<=\\D)(?=\\d)", 2);
     String[] coord2 = secondBound.split("(?<=\\D)(?=\\d)", 2);
 
-    int zeroDiff = Math.abs(firstBound.charAt(0) - secondBound.charAt(0)) + 1;
+    //int zeroDiff = Math.abs(firstBound.charAt(0) - secondBound.charAt(0)) + 1;
+    int zeroDiff = Math.abs((char) (coord1[0].charAt(coord1[0].length() - 1)));
     int oneDiff = Math.abs(Integer.parseInt(coord1[1]) - Integer.parseInt(coord2[1])) + 1;
+
+    System.out.println((char) ((coord1[0].charAt(coord1[0].length() - 1)) + 1));
 
     if (firstBound.charAt(0) == secondBound.charAt(0)) {
       for (int i = 0; i < oneDiff; i++) {
@@ -95,7 +98,6 @@ public class Reference implements Formula {
         sb.append(firstBound.charAt(0));
         //sb.append(Integer.parseInt(String.valueOf(firstBound.charAt(1))) + i);
         sb.append(Integer.parseInt(coord1[1]) + i);
-        System.out.println(Integer.parseInt(coord1[1]) + i);
         bounds.add(sb.toString());
       }
 
