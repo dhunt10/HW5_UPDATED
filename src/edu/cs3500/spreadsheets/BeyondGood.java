@@ -67,7 +67,8 @@ public class BeyondGood {
       throw new IllegalArgumentException("bro give us some inputs to work with");
     }
 
-    createSpreadSheet(infile, incell, view, outfile);
+    createSpreadSheet(infile, view, outfile, incell);
+
   }
 
     /**
@@ -77,7 +78,7 @@ public class BeyondGood {
    * @throws FileNotFoundException
    */
   private static void createSpreadSheet(File file,
-      String cell, String type, File saveTo) throws FileNotFoundException {
+       String type, File saveTo, String incell) throws FileNotFoundException {
     Builder b = new Builder();
     BufferedReader reader;
     try {
@@ -102,6 +103,13 @@ public class BeyondGood {
     Map<Coord, Cell> board = s.getCurrSpreadSheet();
 
     b.createWorksheet();
+
+    if (incell != null) {
+      String[] coords = incell.split("(?<=\\D)(?=\\d)", 2);
+      Coord coord = new Coord(Coord.colNameToIndex(coords[0]), Integer.parseInt(coords[1]));
+      Cell evaluated = s.getCellAt(coord);
+      System.out.print(evaluated.toString());
+    }
 
     IView v = createView(type, saveTo, s);
     v.display();
