@@ -1,11 +1,8 @@
-<<<<<<< HEAD
-import edu.cs3500.spreadsheets.model.BasicWorkSheet;
-=======
+
 import static junit.framework.TestCase.assertEquals;
 
 import edu.cs3500.spreadsheets.model.BasicWorksheet;
 import edu.cs3500.spreadsheets.model.Coord;
->>>>>>> e1b36a44c8cd76964ebb557efdbf37dab1208bd6
 import edu.cs3500.spreadsheets.model.Spreadsheet;
 import org.junit.Test;
 
