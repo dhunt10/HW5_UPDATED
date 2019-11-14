@@ -186,7 +186,9 @@ public class Reference implements Formula {
 
       for (int i = 0; i < evaluatedRefs.size(); i++) {
         try {
+          System.out.println(mapOfCells.get(evaluatedRefs.get(i)).getEvaluatedData());
           sb.append(mapOfCells.get(evaluatedRefs.get(i)).getEvaluatedData());
+          return new StringValue(sb.toString());
         }
         catch (NullPointerException e) {
           continue;
