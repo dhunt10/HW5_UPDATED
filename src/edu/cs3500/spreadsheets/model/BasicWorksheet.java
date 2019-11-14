@@ -46,10 +46,23 @@ public class BasicWorksheet implements Spreadsheet {
    */
   public void getEvaluatedCells() {
 
+    Sexp sexp = null;
     for (Coord item : coordList) {
-      Sexp sexp = Parser.parse(currSpreadSheet.get(item).getContents().toString());
+
+
+      if (currSpreadSheet.get(item).getRawString().contains("=")) {
+        sexp = Parser.parse(currSpreadSheet.get(item)
+            .getRawString().replaceAll("=", ""));
+      }
+      else {
+        if (currSpreadSheet.get(item).getRawString().equals("")) {
+          continue;
+        }
+        sexp = Parser.parse(currSpreadSheet.get(item).getContents().toString());
+      }
+
       Formula deliverable = sexp.accept(new SexpToFormula());
-      currSpreadSheet.get(item).setEvaluatedData(deliverable.evaluate(currSpreadSheet));
+      currSpreadSheet.get(item).setEvaluatedData(deliverable.evaluate(currSpreadSheet, sexp.toString().split(" ")[0]));
     }
   }
 
@@ -77,9 +90,10 @@ public class BasicWorksheet implements Spreadsheet {
     for (int i = highCol; i > 0; i--) {
       for (int j = highRow; j > 0; j--) {
         try {
-          getCellAt(new Coord(i, j));
+          getCellAt(new Coord(i, j)).getContents();
         }
         catch (NullPointerException e) {
+
           blankCell(new Coord(i,j));
         }
       }
@@ -88,7 +102,6 @@ public class BasicWorksheet implements Spreadsheet {
 
   }
 
-  @Override
   public int getMaxRow() {
     int highRow = 0;
 
@@ -100,7 +113,6 @@ public class BasicWorksheet implements Spreadsheet {
     return highRow;
   }
 
-  @Override
   public int getMaxCol() {
     int highCol = 0;
 
@@ -153,10 +165,16 @@ public class BasicWorksheet implements Spreadsheet {
     @Override
     public Builder createCell(int col, int row, String contents) {
       Coord coord = new Coord(col, row);
-      Sexp sexp = Parser.parse(contents);
+      Sexp sexp;
+      if (contents.contains("=")) {
+        sexp = Parser.parse(contents.replaceAll("=", ""));
+      }
+      else {
+        sexp = Parser.parse(contents);
+      }
       Formula formula = sexp.accept(new SexpToFormula());
 
-      Cell cell = new Cell(coord, formula);
+      Cell cell = new Cell(coord, formula, contents);
       currSpreadSheet.put(coord, cell);
       coordList.add(coord);
       return this;
@@ -168,27 +186,26 @@ public class BasicWorksheet implements Spreadsheet {
      * @param coord coordinate of cell you wish to access.
      * @return the cell of the given coordinate.
      */
-      public Cell getCellAt (Coord coord){
-        return currSpreadSheet.get(coord);
-      }
-
-      /**
-       *This creates the worksheet from the builder.
-       * @return BasicWorksheet
-       */
-      @Override
-      public BasicWorksheet createWorksheet () {
-        if (currSpreadSheet.size() == 0) {
-          throw new IllegalArgumentException("Null width or height");
-        }
-        return new BasicWorksheet(currSpreadSheet, coordList);
-      }
-
-      public Map<Coord, Cell> getCurrSpreadSheet() {
-        return currSpreadSheet;
-      }
-
-
-
+    public Cell getCellAt (Coord coord){
+      return currSpreadSheet.get(coord);
     }
+
+    /**
+     *This creates the worksheet from the builder.
+     * @return BasicWorksheet
+     */
+    @Override
+    public BasicWorksheet createWorksheet () {
+      if (currSpreadSheet.size() == 0) {
+        throw new IllegalArgumentException("Null width or height");
+      }
+      return new BasicWorksheet(currSpreadSheet, coordList);
+    }
+
+    public Map<Coord, Cell> getCurrSpreadSheet() {
+      return currSpreadSheet;
+    }
+
+
   }
+}

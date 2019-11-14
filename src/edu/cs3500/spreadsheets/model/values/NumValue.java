@@ -52,7 +52,7 @@ public class NumValue implements Value {
   }
 
   @Override
-  public Value evaluate(Map<Coord, Cell> mapOfCells) {
+  public Value evaluate(Map<Coord, Cell> mapOfCells, String useless) {
     return this;
   }
 

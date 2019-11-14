@@ -47,7 +47,7 @@ public class SexpToFormula implements SexpVisitor<Formula> {
       args.add(l.get(i).accept(this));
     }
 
-    return new Function(l.toString(), args, l.get(0).toString());
+    return new Function(args, l.get(0).toString());
 
   }
 

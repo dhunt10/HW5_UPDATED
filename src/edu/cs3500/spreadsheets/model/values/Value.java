@@ -13,5 +13,9 @@ public interface Value extends Formula {
    */
   void setValue(Object value);
 
+  /**
+   *
+   * @return
+   */
   Value evaluate();
 }

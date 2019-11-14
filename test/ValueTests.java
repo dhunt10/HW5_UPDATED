@@ -1,4 +1,4 @@
-import static junit.framework.TestCase.assertEquals;
+/*import static junit.framework.TestCase.assertEquals;
 
 import com.sun.jdi.Value;
 import edu.cs3500.spreadsheets.model.Cell;
@@ -14,7 +14,7 @@ import org.junit.Test;
 
 /**
  * Testing functionality of functions SUM, PROD, < and COMB.
- */
+ *//*
 public class ValueTests {
 
   @Test
@@ -23,7 +23,7 @@ public class ValueTests {
     lists.add(new NumValue(10));
     lists.add(new NumValue(2));
 
-    Cell test = new Cell(new Coord(1,1), new Function("=(SUM 10 2)", lists, "SUM"));
+    Cell test = new Cell(new Coord(1,1), new Function("=(< 10 2)", lists, "SUM"));
     assertEquals(12, test.getContents());
   }
 
@@ -58,4 +58,4 @@ public class ValueTests {
   }
 
 
-}
+}*/
