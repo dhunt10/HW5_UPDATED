@@ -92,11 +92,23 @@ public class Cell {
     return cell;
   }
 
+  /**
+   * This creates a String representing our cell.
+   * @return String value of our evaluated data.
+   */
   @Override
   public String toString() {
-    return evaluatedData.toString();
+    try {
+      return evaluatedData.toString();
+    } catch (NullPointerException e){
+      return "";
+    }
   }
 
+  /**
+   * This function is used to get back the raw string of the cell.
+   * @return raw string of the cell.
+   */
   public String getRawString() {
     return this.cellValueString;
   }

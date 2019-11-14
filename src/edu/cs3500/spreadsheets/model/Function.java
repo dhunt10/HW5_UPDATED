@@ -25,7 +25,6 @@ public class Function implements Formula {
 
   /**
    * Constructor for a function.
-   * @param item raw string to be parsed.
    * @param args list of all the arguments in the function.
    * @param functionName the name of the function to perform.
    */
