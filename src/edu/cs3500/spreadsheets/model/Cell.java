@@ -2,7 +2,13 @@ package edu.cs3500.spreadsheets.model;
 
 import edu.cs3500.spreadsheets.model.values.StringValue;
 import edu.cs3500.spreadsheets.model.values.Value;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.Border;
 
 
 /**
@@ -66,10 +72,16 @@ public class Cell {
     this.evaluatedData = value;
   }
 
-  public void drawSelf(Graphics2D g2d) {
-    g2d.drawRect(coord.col, coord.row, 20, 10);
-    g2d.drawString(this.toString(), coord.col, coord.row);
+  public JPanel drawSelf() {
+    JLabel field = new JLabel(this.toString());
+    JPanel cell = new JPanel();
+    cell.add(field);
+    cell.setBackground(new Color(196, 198, 255));
+    //cell.setPreferredSize(new Dimension(20, 10));
+    cell.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+    return cell;
   }
+
 
   @Override
   public String toString() {

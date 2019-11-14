@@ -12,11 +12,25 @@ public interface Spreadsheet {
    * @param coord is the location of the cell.
    * @return the cell at the specified coordinate.
    */
-  public Cell getCellAt(Coord coord);
+  Cell getCellAt(Coord coord);
 
   /**
    * Getter to return the current spreadsheet.
    * @return the current spreadsheet in map form.
    */
   Map<Coord, Cell> getCurrSpreadSheet();
+
+  /**
+   * Get the highest column needed so that we can create blank cells if
+   * necessary that are missing in the read in file.
+   * @return int that represents the highest column # in the spreadsheet.
+   */
+  int getMaxCol();
+
+  /**
+   * Get the highest row needed so that we can create blank cells if
+   * necessary that are missing in the read in file.
+   * @return int that represents the highest row # in the spreadsheet.
+   */
+  int getMaxRow();
 }

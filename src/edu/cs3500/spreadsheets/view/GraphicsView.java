@@ -25,7 +25,7 @@ public class GraphicsView implements IView{
     this.sheet = sheet;
     this.width = width;
     this.height = height;
-    frame = new GraphicsFrame(sheet, width, height);
+    this.frame = new GraphicsFrame(sheet, width, height);
   }
 
 

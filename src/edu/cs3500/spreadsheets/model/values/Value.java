@@ -12,4 +12,6 @@ public interface Value extends Formula {
    * @param value value to be set.
    */
   void setValue(Object value);
+
+  Value evaluate();
 }

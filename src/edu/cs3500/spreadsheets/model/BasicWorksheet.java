@@ -71,17 +71,8 @@ public class BasicWorksheet implements Spreadsheet {
    */
   public void fillBlank() {
 
-    int highRow = 0;
-    int highCol = 0;
-    for (Coord coord : coordList) {
-      if (coord.col > highCol) {
-        highCol = coord.col;
-      }
-
-      if (coord.row > highRow) {
-        highRow = coord.row;
-      }
-    }
+    int highRow = getMaxRow();
+    int highCol = getMaxCol();
 
     for (int i = highCol; i > 0; i--) {
       for (int j = highRow; j > 0; j--) {
@@ -95,6 +86,31 @@ public class BasicWorksheet implements Spreadsheet {
 
     }
 
+  }
+
+  @Override
+  public int getMaxRow() {
+    int highRow = 0;
+
+    for (Coord coord : coordList) {
+      if (coord.row > highRow) {
+        highRow = coord.row;
+      }
+    }
+    return highRow;
+  }
+
+  @Override
+  public int getMaxCol() {
+    int highCol = 0;
+
+    for (Coord coord : coordList) {
+      if (coord.col > highCol) {
+        highCol = coord.col;
+      }
+
+    }
+    return highCol;
   }
 
   /**
