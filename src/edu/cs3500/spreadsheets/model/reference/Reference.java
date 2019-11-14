@@ -6,11 +6,9 @@ import edu.cs3500.spreadsheets.model.Formula;
 import edu.cs3500.spreadsheets.model.values.NumValue;
 import edu.cs3500.spreadsheets.model.values.StringValue;
 import edu.cs3500.spreadsheets.model.values.Value;
-import java.awt.SystemTray;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.DoublePredicate;
 
 /**
  * Reference is a type that references any cell.
@@ -118,7 +116,7 @@ public class Reference implements Formula {
       for (int i = 0; i < zeroDiff; i++) {
         for (int j = 0; j < oneDiff; j++) {
           StringBuilder sb = new StringBuilder();
-          System.out.println(sb.append((char) (((coord1[0].charAt(coord1[0].length() - 1)) + i))));
+          sb.append((char) (((coord1[0].charAt(coord1[0].length() - 1)) + i)));
           sb.append(Integer.parseInt(coord1[1]) + j);
           bounds.add(sb.toString());
         }
@@ -155,7 +153,8 @@ public class Reference implements Formula {
     if (useless.equals("(SUM")) {
       for (int i =0; i < evaluatedRefs.size(); i++) {
         try {
-          sum = sum + Double.parseDouble(String.valueOf(mapOfCells.get(evaluatedRefs.get(i)).getEvaluatedData()));
+          sum = sum + Double.parseDouble(String.valueOf(mapOfCells.
+              get(evaluatedRefs.get(i)).getEvaluatedData()));
         }
         catch (NullPointerException e) {
           continue;
@@ -172,7 +171,8 @@ public class Reference implements Formula {
 
 
         try {
-          sum = sum * Double.parseDouble(String.valueOf(mapOfCells.get(evaluatedRefs.get(i)).getEvaluatedData()));
+          sum = sum * Double.parseDouble(String.valueOf(mapOfCells.
+              get(evaluatedRefs.get(i)).getEvaluatedData()));
         }
         catch (NullPointerException e) {
           continue;
@@ -187,7 +187,6 @@ public class Reference implements Formula {
 
       for (int i = 0; i < evaluatedRefs.size(); i++) {
         try {
-          System.out.println(mapOfCells.get(evaluatedRefs.get(i)).getEvaluatedData());
           sb.append(mapOfCells.get(evaluatedRefs.get(i)).getEvaluatedData());
           return new StringValue(sb.toString());
         }
