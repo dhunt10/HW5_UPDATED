@@ -9,16 +9,9 @@ import java.util.Map;
 
 public class TextView implements IView {
   Map<Coord, Cell> sheet;
-  int width;
-  int height;
-  int x;
-  int y;
 
-  public TextView( Map<Coord, Cell> sheet,
-      int width, int height) {
+  public TextView( Map<Coord, Cell> sheet) {
     this.sheet = sheet;
-    this.width = width;
-    this.height = height;
   }
 
 

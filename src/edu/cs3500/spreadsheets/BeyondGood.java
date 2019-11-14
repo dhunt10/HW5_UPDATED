@@ -27,7 +27,7 @@ public class BeyondGood {
    */
   public static void main(String[] args) throws FileNotFoundException {
     File infile = new File(
-        "/Users/darinhunt/Desktop/OOD/HW55555/HW5_UPDATED/test/test3.txt");
+        "/Users/darinhunt/Desktop/OOD/HW55555/HW5_UPDATED/test/test4.txt");
     File outfile = new File(
         "/Users/darinhunt/Desktop/OOD/HW55555/HW5_UPDATED/test/testresult.txt");
     String incell = null;
@@ -110,7 +110,7 @@ public class BeyondGood {
   public static IView createView(String type, File saveTo, Spreadsheet s) {
     switch (type) {
       case("text"):
-        TextView createView = new TextView(s.getCurrSpreadSheet(), 5, 5);
+        TextView createView = new TextView(s.getCurrSpreadSheet());
         createView.saveTo(saveTo.getPath());
         return createView;
       case("graphic"): return new GraphicsView(s.getCurrSpreadSheet(),  50, 50);
