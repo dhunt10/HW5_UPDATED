@@ -148,12 +148,6 @@ public class Reference implements Formula {
 
   @Override
   public Value evaluate(Map<Coord, Cell> mapOfCells, String useless) {
-    /*List<Value> values = new ArrayList<>();
-    for (Coord c : evaluatedRefs) {
-      values.add(mapOfCells.get(c).getContents().evaluate(mapOfCells));
-    }
-    return this.evaluate(mapOfCells);
-  }*/
 
     double sum = 1;
 
@@ -191,7 +185,15 @@ public class Reference implements Formula {
       StringBuilder sb = new StringBuilder();
 
       for (int i = 0; i < evaluatedRefs.size(); i++) {
-        sb.append(mapOfCells.get(evaluatedRefs.get(i)).getEvaluatedData());
+        try {
+          sb.append(mapOfCells.get(evaluatedRefs.get(i)).getEvaluatedData());
+        }
+        catch (NullPointerException e) {
+          continue;
+        }
+        catch (NumberFormatException e) {
+          continue;
+        }
       }
     }
     else {
