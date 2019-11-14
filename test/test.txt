@@ -1,4 +1,6 @@
 A1 =(SUM 10 3)
+A2 25
 B1 4
 C1 9
-D1 =(SUM A1:A2)
+D1 =(SUM A1 A2)
+D2 =(SUM A1 A1)

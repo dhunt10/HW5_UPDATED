@@ -3,10 +3,12 @@ package edu.cs3500.spreadsheets.model.reference;
 import edu.cs3500.spreadsheets.model.Cell;
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.Formula;
+import edu.cs3500.spreadsheets.model.values.NumValue;
 import edu.cs3500.spreadsheets.model.values.Value;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.DoublePredicate;
 
 /**
  * Reference is a type that references any cell.
@@ -18,6 +20,7 @@ public class Reference implements Formula {
   List<String> refs;
   String references;
   List<Coord> evaluatedRefs;
+  String function = "default";
 
   /**
    * Contructor. takes in a string that should be formatted as ["Cell1:Cell2"] or ["Cell1]. The
@@ -27,6 +30,20 @@ public class Reference implements Formula {
    * @param references a string formatted as such: ["Cell1:Cell2"] or ["Cell1].
    */
   public Reference(String references) {
+    this.references = references;
+    String[] splitter = references.split(":");
+
+    if (splitter.length > 1) {
+      refs = referenceListMaker(splitter[0], splitter[1]);
+    } else {
+      refs = referenceListMaker(splitter[0]);
+    }
+
+    this.evaluatedRefs = getRefs();
+  }
+
+  public Reference(String references, String function) {
+    this.function = function;
     this.references = references;
     String[] splitter = references.split(":");
 
@@ -73,13 +90,14 @@ public class Reference implements Formula {
       for (int i = 0; i < oneDiff; i++) {
         StringBuilder sb = new StringBuilder();
         sb.append(firstBound.charAt(0));
-        sb.append(firstBound.charAt(1) + i);
+        sb.append(Integer.parseInt(String.valueOf(firstBound.charAt(1))) + i);
         bounds.add(sb.toString());
       }
+
     } else if (firstBound.charAt(1) == secondBound.charAt(1)) {
       for (int i = 0; i < zeroDiff; i++) {
         StringBuilder sb = new StringBuilder();
-        sb.append((char) firstBound.charAt(0) + 1);
+        sb.append((char) ((firstBound.charAt(0)) + i));
         sb.append(firstBound.charAt(1));
         bounds.add(sb.toString());
       }
@@ -87,8 +105,8 @@ public class Reference implements Formula {
       for (int i = 0; i < zeroDiff; i++) {
         for (int j = 0; j < oneDiff; j++) {
           StringBuilder sb = new StringBuilder();
-          sb.append((char) firstBound.charAt(0) + j);
-          sb.append(firstBound.charAt(1) + i);
+          sb.append((char) ((firstBound.charAt(0)) + j));
+          sb.append(Integer.parseInt(String.valueOf(firstBound.charAt(1))) + i);
           bounds.add(sb.toString());
         }
       }
@@ -105,7 +123,6 @@ public class Reference implements Formula {
    */
   public List<Coord> getRefs() {
     List<Coord> references = new ArrayList<>();
-    System.out.println(this.refs.size());
     for (int i = 0; i < this.refs.size(); i++) {
       int col = Coord.colNameToIndex(String.valueOf(this.refs.get(i).charAt(0)));
       int row = Integer.parseInt(String.valueOf(this.refs.get(i).charAt(1)));
@@ -125,7 +142,15 @@ public class Reference implements Formula {
 
     return this.evaluate(mapOfCells);
   }*/
-    System.out.print(evaluatedRefs);
+
+    int sum = 0;
+    for (int i =0; i < evaluatedRefs.size(); i++) {
+
+      //System.out.println(mapOfCells.get(evaluatedRefs.get(i)).getEvaluatedData());
+
+    }
+    //System.out.println(mapOfCells.get(evaluatedRefs.get(1)).getEvaluatedData());
     return mapOfCells.get(evaluatedRefs.get(0)).getEvaluatedData();
+    //return new NumValue(sum);
   }
 }

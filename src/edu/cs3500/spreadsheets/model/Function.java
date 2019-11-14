@@ -29,7 +29,6 @@ public class Function implements Formula {
    */
   public Function(List<Formula> args, String functionName) {
     this.args = args;
-    //sexp = Parser.parse(item);
     this.functionName = functionName;
   }
 
@@ -69,7 +68,6 @@ public class Function implements Formula {
     else if (this.functionName.equals("PROD")) {
       double ans = 1;
       for (Formula a : values.subList(1, values.size())) {
-        System.out.println(Double.parseDouble(a.evaluate(mapOfCells).toString()));
         ans = ans * Double.parseDouble(a.evaluate(mapOfCells).toString());
       }
       return new NumValue(ans);

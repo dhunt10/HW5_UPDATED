@@ -103,11 +103,9 @@ public class BeyondGood {
     Spreadsheet s = WorksheetReader.read(BasicWorksheet.defaultBuilder(), fileReader);
     Map<Coord, Cell> board = s.getCurrSpreadSheet();
 
-    b.createWorksheet();
-
     IView v = createView("graphic", s);
     v.display();
-    System.out.println(s.getCurrSpreadSheet().get(new Coord(4,1)).getEvaluatedData());
+    System.out.println(s.getCurrSpreadSheet().get(new Coord(4,2)).getEvaluatedData());
   }
 
   public static IView createView(String type, Spreadsheet s) {
