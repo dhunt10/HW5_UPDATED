@@ -4,6 +4,7 @@ import edu.cs3500.spreadsheets.model.Cell;
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.Formula;
 import edu.cs3500.spreadsheets.model.values.NumValue;
+import edu.cs3500.spreadsheets.model.values.StringValue;
 import edu.cs3500.spreadsheets.model.values.Value;
 import java.awt.SystemTray;
 import java.util.ArrayList;
@@ -65,12 +66,15 @@ public class Reference implements Formula {
    */
   public List<String> referenceListMaker(String firstBound) {
 
+    String[] coord1 = firstBound.split("(?<=\\D)(?=\\d)", 2);
+
     List<String> bounds = new ArrayList<>();
     StringBuilder sb = new StringBuilder();
-    sb.append(firstBound.charAt(0));
-    sb.append(firstBound.charAt(1));
+    sb.append(sb.append((((coord1[0].charAt(coord1[0].length() - 1))))));
+    sb.append(Integer.parseInt(coord1[1]));
 
     bounds.add(sb.toString());
+
     return bounds;
   }
 
@@ -86,7 +90,6 @@ public class Reference implements Formula {
     String[] coord1 = firstBound.split("(?<=\\D)(?=\\d)", 2);
     String[] coord2 = secondBound.split("(?<=\\D)(?=\\d)", 2);
 
-    //int zeroDiff = Math.abs(firstBound.charAt(0) - secondBound.charAt(0)) + 1;
     int zeroDiff = Math.abs((char) (((coord1[0].charAt(coord1[0].length() - 1)) + 1)) - (char) (((coord2[0].charAt(coord2[0].length() - 1)) + 1)));
     zeroDiff = zeroDiff + 1;
     int oneDiff = Math.abs(Integer.parseInt(coord1[1]) - Integer.parseInt(coord2[1])) + 1;
@@ -94,8 +97,6 @@ public class Reference implements Formula {
     char coordOneValue = (char) (((coord1[0].charAt(coord1[0].length() - 1)) + 1));
     char coordTwoValue = (char) (((coord2[0].charAt(coord2[0].length() - 1)) + 1));
 
-
-    System.out.println(coord2[1]);
 
     if (coordOneValue == coordTwoValue) {
       for (int i = 0; i < oneDiff; i++) {
@@ -124,7 +125,6 @@ public class Reference implements Formula {
 
     }
 
-    System.out.println(bounds);
     return bounds;
   }
 
@@ -181,7 +181,7 @@ public class Reference implements Formula {
         }
       }
     }
-    else if (useless.equals("COMB")) {
+    else if (useless.equals("(COMB")) {
       StringBuilder sb = new StringBuilder();
 
       for (int i = 0; i < evaluatedRefs.size(); i++) {
@@ -197,11 +197,16 @@ public class Reference implements Formula {
       }
     }
     else {
-      return mapOfCells.get(evaluatedRefs.get(0)).getEvaluatedData();
+      try {
+        return mapOfCells.get(evaluatedRefs.get(0)).getEvaluatedData();
+      }
+      catch (NullPointerException e) {
+        return new StringValue("");
+      }
+      catch (NumberFormatException e) {
+        return new StringValue("");
+      }
     }
-
-
     return new NumValue(sum);
-    //return new NumValue(sum);
   }
 }

@@ -62,7 +62,15 @@ public class Function implements Formula {
     if (this.functionName.equals("SUM")) {
       double ans = 0;
       for (Formula a : values.subList(1, values.size())) {
-        ans = ans + Double.parseDouble(a.evaluate(mapOfCells, func).toString());
+        try {
+          ans = ans + Double.parseDouble(a.evaluate(mapOfCells, func).toString());
+        }
+        catch (NullPointerException e) {
+          continue;
+        }
+        catch (NumberFormatException e) {
+          continue;
+        }
       }
       return new NumValue(ans);
     }
@@ -70,15 +78,32 @@ public class Function implements Formula {
     else if (this.functionName.equals("PROD")) {
       double ans = 1;
       for (Formula a : values.subList(1, values.size())) {
-        ans = ans * Double.parseDouble(a.evaluate(mapOfCells, func).toString());
+        try {
+          ans = ans * Double.parseDouble(a.evaluate(mapOfCells, func).toString());
+        }
+        catch (NullPointerException e) {
+          continue;
+        }
+        catch (NumberFormatException e) {
+          continue;
+        }
       }
       return new NumValue(ans);
     }
 
     else if (this.functionName.equals("<")) {
 
-      boolean ans = Double.parseDouble(values.get(1).evaluate(mapOfCells, func).toString())
-          < Double.parseDouble(values.get(2).evaluate(mapOfCells, func).toString());
+      boolean ans;
+      try {
+        ans = Double.parseDouble(values.get(1).evaluate(mapOfCells, func).toString())
+            < Double.parseDouble(values.get(2).evaluate(mapOfCells, func).toString());
+      }
+      catch (NullPointerException e) {
+          return new BooleanValue(false);
+        }
+        catch (NumberFormatException e) {
+          return new BooleanValue(false);
+        }
       return new BooleanValue(ans);
     }
 
@@ -86,10 +111,22 @@ public class Function implements Formula {
       StringBuilder sb = new StringBuilder();
 
       for (Formula a : values.subList(1, values.size())) {
-        sb.append(a.evaluate(mapOfCells, func));
+        try {
+          sb.append(a.evaluate(mapOfCells, func));
+        }
+        catch (NullPointerException e) {
+          continue;
+        }
+        catch (NumberFormatException e) {
+          continue;
+        }
       }
 
       return new StringValue(sb.toString());
+    }
+
+    else if (func.charAt(0) == '(') {
+      return new StringValue("");
     }
 
     else {

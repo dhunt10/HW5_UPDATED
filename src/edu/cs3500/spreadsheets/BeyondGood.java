@@ -26,8 +26,8 @@ public class BeyondGood {
    * @param args any command-line arguments.
    */
   public static void main(String[] args) throws FileNotFoundException {
-    File infile = new File("/Users/satwikkamarthi/Documents/Northeastern University/Year 4/Fall/OOD/HW5Final/HW5_UPDATED/src/edu/cs3500/spreadsheets/view/test.txt");
-    File outfile = new File("/Users/satwikkamarthi/Documents/Northeastern University/Year 4/Fall/OOD/HW5Final/HW5_UPDATED/src/edu/cs3500/spreadsheets/view/testresult.txt");
+    File infile = new File("/Users/darinhunt/Desktop/OOD/HW55555/HW5_UPDATED/test/test3.txt");
+    File outfile = new File("/Users/darinhunt/Desktop/OOD/HW55555/HW5_UPDATED/test/testresult.txt");
     String incell = null;
     String view = "graphic";
     for (int i = 0; i < args.length; i++) {
