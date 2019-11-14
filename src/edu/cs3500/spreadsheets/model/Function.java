@@ -42,6 +42,12 @@ public class Function implements Formula {
     return sexp;
   }
 
+  /**
+   * This method will be called to evaluate every formula in our list of arguments.
+   * @param mapOfCells this map will be used in the event that a cell contains a reference.
+   * @param useless sends the function name to the reference in that case.
+   * @return a Value to be entered back into the cell.
+   */
   @Override
   public Value evaluate(Map<Coord, Cell> mapOfCells, String useless) {
     List<Value> argValues = new ArrayList<>();

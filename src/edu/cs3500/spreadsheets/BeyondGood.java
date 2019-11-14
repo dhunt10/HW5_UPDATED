@@ -6,7 +6,6 @@ import edu.cs3500.spreadsheets.model.Cell;
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.Spreadsheet;
 import edu.cs3500.spreadsheets.model.WorksheetReader;
-import edu.cs3500.spreadsheets.view.ButtonGrid;
 import edu.cs3500.spreadsheets.view.GraphicsView;
 import edu.cs3500.spreadsheets.view.IView;
 import edu.cs3500.spreadsheets.view.TextView;
@@ -105,13 +104,20 @@ public class BeyondGood {
     v.display();
   }
 
+  /**
+   * This method creates the view based on the input type of view.
+   * @param type the type of view to create
+   * @param saveTo save to the given output file.
+   * @param s the spreadsheet to visualize.
+   * @return a View.
+   */
   public static IView createView(String type, File saveTo, Spreadsheet s) {
     switch (type) {
       case("text"):
-        TextView createView = new TextView(s.getCurrSpreadSheet(), 5, 5);
+        TextView createView = new TextView(s.getCurrSpreadSheet());
         createView.saveTo(saveTo.getPath());
         return createView;
-      case("graphic"): return new GraphicsView(s.getCurrSpreadSheet(),  50, 50);
+      case("graphic"): return new GraphicsView(s.getCurrSpreadSheet(),  200, 100);
       default: throw new IllegalArgumentException("This type of view is not supported");
     }
   }

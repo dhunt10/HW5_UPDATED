@@ -12,14 +12,17 @@ import javax.swing.SpringLayout;
 import java.awt.*;
 
 /**
- *
+ * This is a representation of the panel of cells (also panels) that will go into
+ * our JFrame.
  */
 public class GridPanel extends JPanel {
   private Map<Coord, Cell> curr;
 
 
   /**
-   * Make a GridPanel.
+   * Make a GridPanel, the contstructor. In the constructor we fill the grid with empty cells,
+   * then we set the size of each panel in the GridBagLayout, and finally we make
+   * the header cells a different color and not cells that can be modified.
    */
   public GridPanel(int col, int row, Map<Coord, Cell> curr) {
     super();
@@ -32,7 +35,7 @@ public class GridPanel extends JPanel {
     setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
     for (int i = 0; i < col; i++) {
       for (int j = 0; j < row; j++) {
-        JLabel field = new JLabel("     ");
+        JLabel field = new JLabel(" ");
         Cell template = new Cell(new Coord(i + 1, j + 1));
         JPanel cell = template.drawSelf();
         cell.add(field);

@@ -102,6 +102,11 @@ public class BasicWorksheet implements Spreadsheet {
 
   }
 
+  /**
+   * Get the highest column needed so that we can create blank cells if
+   * necessary that are missing in the read in file.
+   * @return int that represents the highest column # in the spreadsheet.
+   */
   public int getMaxRow() {
     int highRow = 0;
 
@@ -113,6 +118,11 @@ public class BasicWorksheet implements Spreadsheet {
     return highRow;
   }
 
+  /**
+   * Get the highest row needed so that we can create blank cells if
+   * necessary that are missing in the read in file.
+   * @return int that represents the highest row # in the spreadsheet.
+   */
   public int getMaxCol() {
     int highCol = 0;
 
@@ -137,6 +147,11 @@ public class BasicWorksheet implements Spreadsheet {
     return currSpreadSheet.get(coord);
   }
 
+  /**
+   * This will get us the current list of cells in
+   * our spreadsheet.
+   * @return a hashmap of our cells.
+   */
   @Override
   public Map<Coord, Cell> getCurrSpreadSheet() {
     return currSpreadSheet;
@@ -202,6 +217,12 @@ public class BasicWorksheet implements Spreadsheet {
       return new BasicWorksheet(currSpreadSheet, coordList);
     }
 
+    /**
+     * This is the same method in our builder that lets us
+     * access the map of cells that are currently being used in
+     * our spreadsheet.
+     * @return a map of cells.
+     */
     public Map<Coord, Cell> getCurrSpreadSheet() {
       return currSpreadSheet;
     }

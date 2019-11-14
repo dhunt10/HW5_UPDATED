@@ -4,24 +4,28 @@ import edu.cs3500.spreadsheets.model.Cell;
 import edu.cs3500.spreadsheets.model.Coord;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * This represents a textual view of our spreadsheet.
+ */
 public class TextView implements IView {
   Map<Coord, Cell> sheet;
-  int width;
-  int height;
-  int x;
-  int y;
 
-  public TextView( Map<Coord, Cell> sheet,
-      int width, int height) {
+  /**
+   * This is our constructor, creates the textual view inputs.
+   * @param sheet the cells needed to be in our textualview.
+   */
+  public TextView( Map<Coord, Cell> sheet) {
     this.sheet = sheet;
-    this.width = width;
-    this.height = height;
   }
 
 
+  /**
+   * This is the saveTo inherited from the interface, and it saves the new evaluated textfile
+   * to a given output file.
+   * @param filePath the path of the file to save the evaluated spreadsheet to.
+   */
   @Override
   public void saveTo(String filePath) {
     try {
@@ -34,11 +38,18 @@ public class TextView implements IView {
     }
   }
 
+  /**
+   * Inherited method from interface, displays the evaluated text on the console.
+   */
   @Override
   public void display() {
     System.out.println(buildTextView());
   }
 
+  /**
+   * This build the textView by using a String builder to add each cell and its
+   * evaluation.
+   */
   @Override
   public String buildTextView() {
     StringBuilder output = new StringBuilder();

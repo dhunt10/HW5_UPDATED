@@ -103,11 +103,10 @@ import org.junit.Test;
     Cell test = new Cell(new Coord(1,1), new Function("=(SUM 10 TRUE)"));
     assertEquals(12, test.getContents());
 
-  }*/
+  }
 
 
 
 
 
-}
-*/
+} */

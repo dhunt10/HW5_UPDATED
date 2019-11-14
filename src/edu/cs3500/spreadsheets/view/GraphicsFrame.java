@@ -4,15 +4,15 @@ import edu.cs3500.spreadsheets.model.Cell;
 import edu.cs3500.spreadsheets.model.Coord;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Rectangle;
 import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
 /**
- *
- *
+ *This represents our frame which takes in our panel and has
+ * external window properties such as scrollbars that makes
+ * our spreadsheet window look nice.
  */
 public class GraphicsFrame extends JFrame {
 
@@ -22,10 +22,10 @@ public class GraphicsFrame extends JFrame {
   private JLabel[][] grid; //names the grid of buttons
 
   /**
-   *
-   * @param curr
-   * @param width
-   * @param height
+   * This is the constructor for the frame.
+   * @param curr the cells to be inputted into the frame.
+   * @param width how wide the frame will be, the starting window.
+   * @param height how tall the fame will be, the starting window.
    */
   public GraphicsFrame(Map<Coord, Cell> curr,
       int width, int height) {
@@ -46,7 +46,8 @@ public class GraphicsFrame extends JFrame {
   }
 
   /**
-   *
+   *Will need this for the future implementations when the user has to interact with the sheet
+   * and we will have to update the sheet based on the interaction.
    * @param curr
    */
   public void updatecurrState(Map<Coord, Cell> curr) {
@@ -55,7 +56,7 @@ public class GraphicsFrame extends JFrame {
   }
 
   /**
-   *
+   *This method makes the frame visible.
    */
   public void display() {
     this.setVisible(true);

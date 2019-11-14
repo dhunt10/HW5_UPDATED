@@ -4,6 +4,7 @@ import edu.cs3500.spreadsheets.model.values.NumValue;
 import edu.cs3500.spreadsheets.model.values.StringValue;
 import edu.cs3500.spreadsheets.model.values.Value;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -74,21 +75,44 @@ public class Cell {
     this.evaluatedData = value;
   }
 
+  /**
+   * This method draws a cell as a panel for our view to display.
+   * @return a JPanel that will be placed on our Jframe.
+   */
   public JPanel drawSelf() {
-    JLabel field = new JLabel(this.toString());
+    JLabel field;
+    if(this.toString() == ""){
+      field = new JLabel(" ");
+    }
+  else{
+    field = new JLabel(this.toString());
+    }
+
     JPanel cell = new JPanel();
     cell.add(field);
     cell.setBackground(new Color(196, 198, 255));
-    //cell.setPreferredSize(new Dimension(20, 10));
+    cell.setPreferredSize(new Dimension(50, 20));
     cell.setBorder(BorderFactory.createLineBorder(Color.white));
     return cell;
   }
 
+  /**
+   * This creates a String representing our cell.
+   * @return String value of our evaluated data.
+   */
   @Override
   public String toString() {
-    return evaluatedData.toString();
+    try {
+      return evaluatedData.toString();
+    } catch (NullPointerException e){
+      return "";
+    }
   }
 
+  /**
+   * This creates a String representation of the preprocessed cell.
+   * @return String value of our un-evaluated data.
+   */
   public String getRawString() {
     return this.cellValueString;
   }
