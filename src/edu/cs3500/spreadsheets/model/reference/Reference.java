@@ -5,6 +5,7 @@ import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.Formula;
 import edu.cs3500.spreadsheets.model.values.NumValue;
 import edu.cs3500.spreadsheets.model.values.Value;
+import java.awt.SystemTray;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -82,37 +83,48 @@ public class Reference implements Formula {
    */
   public List<String> referenceListMaker(String firstBound, String secondBound) {
     List<String> bounds = new ArrayList<>();
+    String[] coord1 = firstBound.split("(?<=\\D)(?=\\d)", 2);
+    String[] coord2 = secondBound.split("(?<=\\D)(?=\\d)", 2);
 
-    int zeroDiff = Math.abs(firstBound.charAt(0) - secondBound.charAt(0)) + 1;
-    int oneDiff = Math.abs(firstBound.charAt(1) - secondBound.charAt(1)) + 1;
+    //int zeroDiff = Math.abs(firstBound.charAt(0) - secondBound.charAt(0)) + 1;
+    int zeroDiff = Math.abs((char) (((coord1[0].charAt(coord1[0].length() - 1)) + 1)) - (char) (((coord2[0].charAt(coord2[0].length() - 1)) + 1)));
+    zeroDiff = zeroDiff + 1;
+    int oneDiff = Math.abs(Integer.parseInt(coord1[1]) - Integer.parseInt(coord2[1])) + 1;
 
-    if (firstBound.charAt(0) == secondBound.charAt(0)) {
+    char coordOneValue = (char) (((coord1[0].charAt(coord1[0].length() - 1)) + 1));
+    char coordTwoValue = (char) (((coord2[0].charAt(coord2[0].length() - 1)) + 1));
+
+
+    System.out.println(coord2[1]);
+
+    if (coordOneValue == coordTwoValue) {
       for (int i = 0; i < oneDiff; i++) {
         StringBuilder sb = new StringBuilder();
-        sb.append(firstBound.charAt(0));
-        sb.append(Integer.parseInt(String.valueOf(firstBound.charAt(1))) + i);
+        sb.append((char) (((coord1[0].charAt(coord1[0].length() - 1)) + i - i)));
+        sb.append(Integer.parseInt(coord1[1]) + i);
         bounds.add(sb.toString());
       }
 
-    } else if (firstBound.charAt(1) == secondBound.charAt(1)) {
+    } else if (coord1[1].equals(coord2[1])) {
       for (int i = 0; i < zeroDiff; i++) {
         StringBuilder sb = new StringBuilder();
-        sb.append((char) ((firstBound.charAt(0)) + i));
-        sb.append(firstBound.charAt(1));
+        sb.append((char) (((coord1[0].charAt(coord1[0].length() - 1)) + i)));
+        sb.append(Integer.parseInt(coord1[1]));
         bounds.add(sb.toString());
       }
     } else {
       for (int i = 0; i < zeroDiff; i++) {
         for (int j = 0; j < oneDiff; j++) {
           StringBuilder sb = new StringBuilder();
-          sb.append((char) ((firstBound.charAt(0)) + j));
-          sb.append(Integer.parseInt(String.valueOf(firstBound.charAt(1))) + i);
+          System.out.println(sb.append((char) (((coord1[0].charAt(coord1[0].length() - 1)) + i))));
+          sb.append(Integer.parseInt(coord1[1]) + j);
           bounds.add(sb.toString());
         }
       }
 
     }
 
+    System.out.println(bounds);
     return bounds;
   }
 
@@ -124,8 +136,9 @@ public class Reference implements Formula {
   public List<Coord> getRefs() {
     List<Coord> references = new ArrayList<>();
     for (int i = 0; i < this.refs.size(); i++) {
+      String[] coord1 = refs.get(i).split("(?<=\\D)(?=\\d)", 2);
       int col = Coord.colNameToIndex(String.valueOf(this.refs.get(i).charAt(0)));
-      int row = Integer.parseInt(String.valueOf(this.refs.get(i).charAt(1)));
+      int row = Integer.parseInt(String.valueOf(coord1[1]));
 
       Coord coord = new Coord(col, row);
       references.add(coord);
@@ -139,7 +152,6 @@ public class Reference implements Formula {
     for (Coord c : evaluatedRefs) {
       values.add(mapOfCells.get(c).getContents().evaluate(mapOfCells));
     }
-
     return this.evaluate(mapOfCells);
   }*/
 
@@ -147,17 +159,32 @@ public class Reference implements Formula {
 
     if (useless.equals("(SUM")) {
       for (int i =0; i < evaluatedRefs.size(); i++) {
+        try {
+          sum = sum + Double.parseDouble(String.valueOf(mapOfCells.get(evaluatedRefs.get(i)).getEvaluatedData()));
+        }
+        catch (NullPointerException e) {
+          continue;
+        }
+        catch (NumberFormatException e) {
+          continue;
+        }
 
-        //System.out.println(mapOfCells.get(evaluatedRefs.get(i)).getEvaluatedData());
-        sum = sum + Double.parseDouble(String.valueOf(mapOfCells.get(evaluatedRefs.get(i)).getEvaluatedData()));
       }
       sum = sum - 1;
     }
     else if (useless.equals("(PROD")) {
       for (int i =0; i < evaluatedRefs.size(); i++) {
 
-        //System.out.println(mapOfCells.get(evaluatedRefs.get(i)).getEvaluatedData());
-        sum = sum * Double.parseDouble(String.valueOf(mapOfCells.get(evaluatedRefs.get(i)).getEvaluatedData()));
+
+        try {
+          sum = sum * Double.parseDouble(String.valueOf(mapOfCells.get(evaluatedRefs.get(i)).getEvaluatedData()));
+        }
+        catch (NullPointerException e) {
+          continue;
+        }
+        catch (NumberFormatException e) {
+          continue;
+        }
       }
     }
     else if (useless.equals("COMB")) {

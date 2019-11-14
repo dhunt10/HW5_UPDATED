@@ -34,7 +34,8 @@ public class Cell {
   public Cell(Coord coord) {
     this.coord = coord;
     this.contents = new StringValue("");
-    this.evaluatedData = new NumValue(0);
+    this.evaluatedData = new StringValue("");
+    this.cellValueString = "";
   }
 
   /**
