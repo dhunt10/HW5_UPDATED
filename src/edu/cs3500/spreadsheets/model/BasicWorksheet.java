@@ -55,6 +55,9 @@ public class BasicWorksheet implements Spreadsheet {
             .getRawString().replaceAll("=", ""));
       }
       else {
+        if (currSpreadSheet.get(item).getRawString().equals("")) {
+          continue;
+        }
         sexp = Parser.parse(currSpreadSheet.get(item).getContents().toString());
       }
 
@@ -87,9 +90,10 @@ public class BasicWorksheet implements Spreadsheet {
     for (int i = highCol; i > 0; i--) {
       for (int j = highRow; j > 0; j--) {
         try {
-          getCellAt(new Coord(i, j));
+          getCellAt(new Coord(i, j)).getContents();
         }
         catch (NullPointerException e) {
+
           blankCell(new Coord(i,j));
         }
       }
