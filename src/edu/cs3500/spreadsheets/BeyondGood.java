@@ -26,10 +26,8 @@ public class BeyondGood {
    * @param args any command-line arguments.
    */
   public static void main(String[] args) throws FileNotFoundException {
-    File infile = new File(
-        "/Users/darinhunt/Desktop/OOD/HW55555/HW5_UPDATED/test/test4.txt");
-    File outfile = new File(
-        "/Users/darinhunt/Desktop/OOD/HW55555/HW5_UPDATED/test/testresult.txt");
+    File infile = null;
+    File outfile = null;
     String incell = null;
     String view = "graphic";
     for (int i = 0; i < args.length; i++) {
@@ -74,7 +72,7 @@ public class BeyondGood {
     /**
    * Function that creates a spreadsheet by taking in a file.
    * @param file the name of the file.
-   * @param cell cell.
+   * @param incell cell.
    * @throws FileNotFoundException
    */
   private static void createSpreadSheet(File file,
