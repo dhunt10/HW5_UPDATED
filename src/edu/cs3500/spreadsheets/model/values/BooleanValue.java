@@ -21,16 +21,29 @@ public class BooleanValue implements Value {
     this.bool = bool;
   }
 
+  /**
+   * Return a string version of this class.
+   * @return String
+   */
   @Override
   public String toString() {
     return String.valueOf(bool);
   }
 
+  /**
+   * Function to give us the evaluated version of the Value.
+   * @return Value
+   */
   @Override
   public Value evaluate() {
     return this;
   }
 
+  /**
+   * This overrides the equals
+   * @param o
+   * @return
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
