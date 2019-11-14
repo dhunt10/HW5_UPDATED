@@ -13,7 +13,7 @@ public interface Formula {
    * @return a String representation of a formula.
    */
   @Override
-  public String toString();
+  String toString();
 
   /**
    * This evaluates a given cell's formula and returns the final value.

@@ -20,9 +20,10 @@ public class Reference implements Formula {
   List<Coord> evaluatedRefs;
 
   /**
-   * Contructor. takes in a string that should be formatted as ["Cell1:Cell2"] or ["Cell1].
-   * The constructor takes in a string, calls a function to make a list of the cells.
-   * being references and then calls an additional function to return a list of coordinates.
+   * Contructor. takes in a string that should be formatted as ["Cell1:Cell2"] or ["Cell1]. The
+   * constructor takes in a string, calls a function to make a list of the cells. being references
+   * and then calls an additional function to return a list of coordinates.
+   *
    * @param references a string formatted as such: ["Cell1:Cell2"] or ["Cell1].
    */
   public Reference(String references) {
@@ -31,8 +32,7 @@ public class Reference implements Formula {
 
     if (splitter.length > 1) {
       refs = referenceListMaker(splitter[0], splitter[1]);
-    }
-    else {
+    } else {
       refs = referenceListMaker(splitter[0]);
     }
 
@@ -40,8 +40,8 @@ public class Reference implements Formula {
   }
 
   /**
-   * Makes a list of single reference cell.
-   * Polymorphic design allows for just one cell.
+   * Makes a list of single reference cell. Polymorphic design allows for just one cell.
+   *
    * @param firstBound the single cell to be parsed through.
    * @return returns a list of 1 single reference cell.
    */
@@ -53,13 +53,13 @@ public class Reference implements Formula {
     sb.append(firstBound.charAt(1));
 
     bounds.add(sb.toString());
-
     return bounds;
   }
 
   /**
    * Makes a list of all the cells within a given range.
-   * @param firstBound range is defined with firstBound as the start.
+   *
+   * @param firstBound  range is defined with firstBound as the start.
    * @param secondBound range is defined with second bound as the start.
    * @return a list of strings that hold all the points being referenced.
    */
@@ -76,18 +76,14 @@ public class Reference implements Formula {
         sb.append(firstBound.charAt(1) + i);
         bounds.add(sb.toString());
       }
-    }
-
-    else if (firstBound.charAt(1) == secondBound.charAt(1)) {
+    } else if (firstBound.charAt(1) == secondBound.charAt(1)) {
       for (int i = 0; i < zeroDiff; i++) {
         StringBuilder sb = new StringBuilder();
         sb.append((char) firstBound.charAt(0) + 1);
         sb.append(firstBound.charAt(1));
         bounds.add(sb.toString());
       }
-    }
-
-    else {
+    } else {
       for (int i = 0; i < zeroDiff; i++) {
         for (int j = 0; j < oneDiff; j++) {
           StringBuilder sb = new StringBuilder();
@@ -104,13 +100,16 @@ public class Reference implements Formula {
 
   /**
    * converts the strings made in referenceListMaker to coordinates.
+   *
    * @return a list of coordinates being referenced.
    */
   public List<Coord> getRefs() {
-    List<Coord> references = null;
-    for (int i = 0; i < this.refs.size(); i ++) {
-      int col = Coord.colNameToIndex(this.refs.get(i));
-      int row = Integer.parseInt(this.refs.get(i));
+    List<Coord> references = new ArrayList<>();
+    System.out.println(this.refs.size());
+    for (int i = 0; i < this.refs.size(); i++) {
+      int col = Coord.colNameToIndex(String.valueOf(this.refs.get(i).charAt(0)));
+      int row = Integer.parseInt(String.valueOf(this.refs.get(i).charAt(1)));
+
       Coord coord = new Coord(col, row);
       references.add(coord);
     }
@@ -119,11 +118,14 @@ public class Reference implements Formula {
 
   @Override
   public Value evaluate(Map<Coord, Cell> mapOfCells) {
-    List<Value> values = new ArrayList<>();
+    /*List<Value> values = new ArrayList<>();
     for (Coord c : evaluatedRefs) {
       values.add(mapOfCells.get(c).getContents().evaluate(mapOfCells));
     }
 
     return this.evaluate(mapOfCells);
+  }*/
+    System.out.print(evaluatedRefs);
+    return mapOfCells.get(evaluatedRefs.get(0)).getEvaluatedData();
   }
 }

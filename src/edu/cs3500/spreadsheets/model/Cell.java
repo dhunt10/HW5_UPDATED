@@ -13,15 +13,17 @@ public class Cell {
   private Formula contents;
   private Coord coord;
   private Value evaluatedData;
+  private String cellValueString;
 
   /**
    * Construtor for a cell that will have contents.
    * @param coords the coordinates of the cell in currSpreadSheet.
    * @param contents content of the cell, not yet evaluated.
    */
-  public Cell(Coord coords, Formula contents) {
+  public Cell(Coord coords, Formula contents, String cellValueString) {
     this.coord = coords;
     this.contents = contents;
+    this.cellValueString = cellValueString;
   }
 
   /**
@@ -54,8 +56,8 @@ public class Cell {
    * Gets data that has been evaluated.
    * @return data that has been evaluated.
    */
-  public String getEvaluatedData() {
-    return this.evaluatedData.toString();
+  public Value getEvaluatedData() {
+    return this.evaluatedData;
   }
 
   /**
@@ -74,6 +76,10 @@ public class Cell {
   @Override
   public String toString() {
     return evaluatedData.toString();
+  }
+
+  public String getRawString() {
+    return this.cellValueString;
   }
 
 }

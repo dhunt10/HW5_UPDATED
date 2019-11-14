@@ -46,8 +46,17 @@ public class BasicWorksheet implements Spreadsheet {
    */
   public void getEvaluatedCells() {
 
+    Sexp sexp = null;
     for (Coord item : coordList) {
-      Sexp sexp = Parser.parse(currSpreadSheet.get(item).getContents().toString());
+
+
+      if (currSpreadSheet.get(item).getRawString().contains("=")) {
+        sexp = Parser.parse(currSpreadSheet.get(item)
+            .getRawString().replaceAll("=", ""));
+      }
+      else {
+        sexp = Parser.parse(currSpreadSheet.get(item).getContents().toString());
+      }
       Formula deliverable = sexp.accept(new SexpToFormula());
       currSpreadSheet.get(item).setEvaluatedData(deliverable.evaluate(currSpreadSheet));
     }
@@ -151,10 +160,16 @@ public class BasicWorksheet implements Spreadsheet {
     @Override
     public Builder createCell(int col, int row, String contents) {
       Coord coord = new Coord(col, row);
-      Sexp sexp = Parser.parse(contents);
+      Sexp sexp;
+      if (contents.contains("=")) {
+        sexp = Parser.parse(contents.replaceAll("=", ""));
+      }
+      else {
+        sexp = Parser.parse(contents);
+      }
       Formula formula = sexp.accept(new SexpToFormula());
 
-      Cell cell = new Cell(coord, formula);
+      Cell cell = new Cell(coord, formula, contents);
       currSpreadSheet.put(coord, cell);
       coordList.add(coord);
       return this;
