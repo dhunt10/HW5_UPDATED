@@ -146,7 +146,6 @@ public class Reference implements Formula {
     for (Coord c : evaluatedRefs) {
       values.add(mapOfCells.get(c).getContents().evaluate(mapOfCells));
     }
-
     return this.evaluate(mapOfCells);
   }*/
 
