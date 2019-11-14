@@ -41,13 +41,13 @@ public class Function implements Formula {
   }
 
   @Override
-  public Value evaluate(Map<Coord, Cell> mapOfCells) {
+  public Value evaluate(Map<Coord, Cell> mapOfCells, String useless) {
     List<Value> argValues = new ArrayList<>();
     for (Formula f: this.args) {
-      argValues.add(f.evaluate(mapOfCells));
+      argValues.add(f.evaluate(mapOfCells, useless));
     }
 
-    return evaluateHelper(argValues);
+    return evaluateHelper(argValues, useless);
   }
 
 
@@ -56,11 +56,11 @@ public class Function implements Formula {
    * @param values list of values to be operated on.
    * @return returns a final value to be set as evaluated value.
    */
-  public Value evaluateHelper(List<Value> values) {
+  public Value evaluateHelper(List<Value> values, String func) {
     if (this.functionName.equals("SUM")) {
       double ans = 0;
       for (Formula a : values.subList(1, values.size())) {
-        ans = ans + Double.parseDouble(a.evaluate(mapOfCells).toString());
+        ans = ans + Double.parseDouble(a.evaluate(mapOfCells, func).toString());
       }
       return new NumValue(ans);
     }
@@ -68,15 +68,15 @@ public class Function implements Formula {
     else if (this.functionName.equals("PROD")) {
       double ans = 1;
       for (Formula a : values.subList(1, values.size())) {
-        ans = ans * Double.parseDouble(a.evaluate(mapOfCells).toString());
+        ans = ans * Double.parseDouble(a.evaluate(mapOfCells, func).toString());
       }
       return new NumValue(ans);
     }
 
     else if (this.functionName.equals("<")) {
 
-      boolean ans = Double.parseDouble(values.get(1).evaluate(mapOfCells).toString())
-          < Double.parseDouble(values.get(2).evaluate(mapOfCells).toString());
+      boolean ans = Double.parseDouble(values.get(1).evaluate(mapOfCells, func).toString())
+          < Double.parseDouble(values.get(2).evaluate(mapOfCells, func).toString());
       return new BooleanValue(ans);
     }
 
@@ -84,7 +84,7 @@ public class Function implements Formula {
       StringBuilder sb = new StringBuilder();
 
       for (Formula a : values.subList(1, values.size())) {
-        sb.append(a.evaluate(mapOfCells));
+        sb.append(a.evaluate(mapOfCells, func));
       }
 
       return new StringValue(sb.toString());

@@ -1,5 +1,6 @@
 package edu.cs3500.spreadsheets.model;
 
+import edu.cs3500.spreadsheets.model.values.NumValue;
 import edu.cs3500.spreadsheets.model.values.StringValue;
 import edu.cs3500.spreadsheets.model.values.Value;
 import java.awt.Graphics2D;
@@ -33,7 +34,7 @@ public class Cell {
   public Cell(Coord coord) {
     this.coord = coord;
     this.contents = new StringValue("");
-    this.evaluatedData = new StringValue("");
+    this.evaluatedData = new NumValue(0);
   }
 
   /**

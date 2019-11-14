@@ -1,6 +1,7 @@
 package edu.cs3500.spreadsheets.model;
 
 import edu.cs3500.spreadsheets.model.values.Value;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,5 +21,5 @@ public interface Formula {
    * @param mapOfCells this map will be used in the event that a cell contains a reference.
    * @return a final value to be added as part of the cell's evaluated content.
    */
-  Value evaluate(Map<Coord, Cell> mapOfCells);
+  Value evaluate(Map<Coord, Cell> mapOfCells, String formula);
 }

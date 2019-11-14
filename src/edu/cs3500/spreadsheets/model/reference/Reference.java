@@ -134,7 +134,7 @@ public class Reference implements Formula {
   }
 
   @Override
-  public Value evaluate(Map<Coord, Cell> mapOfCells) {
+  public Value evaluate(Map<Coord, Cell> mapOfCells, String useless) {
     /*List<Value> values = new ArrayList<>();
     for (Coord c : evaluatedRefs) {
       values.add(mapOfCells.get(c).getContents().evaluate(mapOfCells));
@@ -143,14 +143,36 @@ public class Reference implements Formula {
     return this.evaluate(mapOfCells);
   }*/
 
-    int sum = 0;
-    for (int i =0; i < evaluatedRefs.size(); i++) {
+    double sum = 1;
 
-      //System.out.println(mapOfCells.get(evaluatedRefs.get(i)).getEvaluatedData());
+    if (useless.equals("(SUM")) {
+      for (int i =0; i < evaluatedRefs.size(); i++) {
 
+        //System.out.println(mapOfCells.get(evaluatedRefs.get(i)).getEvaluatedData());
+        sum = sum + Double.parseDouble(String.valueOf(mapOfCells.get(evaluatedRefs.get(i)).getEvaluatedData()));
+      }
+      sum = sum - 1;
     }
-    //System.out.println(mapOfCells.get(evaluatedRefs.get(1)).getEvaluatedData());
-    return mapOfCells.get(evaluatedRefs.get(0)).getEvaluatedData();
+    else if (useless.equals("(PROD")) {
+      for (int i =0; i < evaluatedRefs.size(); i++) {
+
+        //System.out.println(mapOfCells.get(evaluatedRefs.get(i)).getEvaluatedData());
+        sum = sum * Double.parseDouble(String.valueOf(mapOfCells.get(evaluatedRefs.get(i)).getEvaluatedData()));
+      }
+    }
+    else if (useless.equals("COMB")) {
+      StringBuilder sb = new StringBuilder();
+
+      for (int i = 0; i < evaluatedRefs.size(); i++) {
+        sb.append(mapOfCells.get(evaluatedRefs.get(i)).getEvaluatedData());
+      }
+    }
+    else {
+      return mapOfCells.get(evaluatedRefs.get(0)).getEvaluatedData();
+    }
+
+
+    return new NumValue(sum);
     //return new NumValue(sum);
   }
 }

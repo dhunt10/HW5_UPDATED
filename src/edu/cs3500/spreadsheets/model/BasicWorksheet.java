@@ -57,8 +57,9 @@ public class BasicWorksheet implements Spreadsheet {
       else {
         sexp = Parser.parse(currSpreadSheet.get(item).getContents().toString());
       }
+
       Formula deliverable = sexp.accept(new SexpToFormula());
-      currSpreadSheet.get(item).setEvaluatedData(deliverable.evaluate(currSpreadSheet));
+      currSpreadSheet.get(item).setEvaluatedData(deliverable.evaluate(currSpreadSheet, sexp.toString().split(" ")[0]));
     }
   }
 
