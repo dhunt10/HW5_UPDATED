@@ -1,11 +1,13 @@
 package edu.cs3500.spreadsheets.model;
 
+import edu.cs3500.spreadsheets.model.reference.Reference;
 import edu.cs3500.spreadsheets.model.values.BooleanValue;
 import edu.cs3500.spreadsheets.model.values.NumValue;
 import edu.cs3500.spreadsheets.model.values.StringValue;
 import edu.cs3500.spreadsheets.model.values.Value;
 import edu.cs3500.spreadsheets.sexp.Sexp;
 import java.awt.SystemTray;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -91,7 +93,13 @@ public class Function implements Formula {
     }
 
     else {
-      throw new IllegalArgumentException("Not a valid operator");
+      try {
+        return new NumValue(Double.parseDouble(String.valueOf(values.get(0))));
+      }
+      catch (Exception e) {
+        throw new IllegalArgumentException("Not a valid operator");
+      }
+
     }
 
   }

@@ -105,7 +105,7 @@ public class BeyondGood {
 
     IView v = createView("graphic", s);
     v.display();
-    System.out.println(s.getCurrSpreadSheet().get(new Coord(4,2)).getEvaluatedData());
+    System.out.println(s.getCurrSpreadSheet().get(new Coord(5,2)).getEvaluatedData());
   }
 
   public static IView createView(String type, Spreadsheet s) {
