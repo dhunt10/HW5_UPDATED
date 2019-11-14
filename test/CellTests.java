@@ -15,7 +15,7 @@ import org.junit.Test;
 /**
  * Testing for functionality of cell.
  */
-public class CellTests {
+/*public class CellTests {
 
   /*@Test
   public void testBoolean() {
@@ -110,3 +110,4 @@ public class CellTests {
 
 
 }
+*/

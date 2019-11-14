@@ -186,27 +186,26 @@ public class BasicWorksheet implements Spreadsheet {
      * @param coord coordinate of cell you wish to access.
      * @return the cell of the given coordinate.
      */
-      public Cell getCellAt (Coord coord){
-        return currSpreadSheet.get(coord);
-      }
-
-      /**
-       *This creates the worksheet from the builder.
-       * @return BasicWorksheet
-       */
-      @Override
-      public BasicWorksheet createWorksheet () {
-        if (currSpreadSheet.size() == 0) {
-          throw new IllegalArgumentException("Null width or height");
-        }
-        return new BasicWorksheet(currSpreadSheet, coordList);
-      }
-
-      public Map<Coord, Cell> getCurrSpreadSheet() {
-        return currSpreadSheet;
-      }
-
-
-
+    public Cell getCellAt (Coord coord){
+      return currSpreadSheet.get(coord);
     }
+
+    /**
+     *This creates the worksheet from the builder.
+     * @return BasicWorksheet
+     */
+    @Override
+    public BasicWorksheet createWorksheet () {
+      if (currSpreadSheet.size() == 0) {
+        throw new IllegalArgumentException("Null width or height");
+      }
+      return new BasicWorksheet(currSpreadSheet, coordList);
+    }
+
+    public Map<Coord, Cell> getCurrSpreadSheet() {
+      return currSpreadSheet;
+    }
+
+
   }
+}

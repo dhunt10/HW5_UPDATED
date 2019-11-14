@@ -6,6 +6,7 @@ import edu.cs3500.spreadsheets.model.Cell;
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.Spreadsheet;
 import edu.cs3500.spreadsheets.model.WorksheetReader;
+import edu.cs3500.spreadsheets.view.ButtonGrid;
 import edu.cs3500.spreadsheets.view.GraphicsView;
 import edu.cs3500.spreadsheets.view.IView;
 import edu.cs3500.spreadsheets.view.TextView;
@@ -25,15 +26,10 @@ public class BeyondGood {
    * @param args any command-line arguments.
    */
   public static void main(String[] args) throws FileNotFoundException {
-    File infile = new File("/Users/darinhunt/Desktop/OOD/HW55555/HW5_UPDATED/test/test.txt");
-    try {
-      infile.createNewFile();
-    } catch (IOException e) {
-
-    }
-    File outfile = null;
+    File infile = new File("/Users/satwikkamarthi/Documents/Northeastern University/Year 4/Fall/OOD/HW5Final/HW5_UPDATED/src/edu/cs3500/spreadsheets/view/test.txt");
+    File outfile = new File("/Users/satwikkamarthi/Documents/Northeastern University/Year 4/Fall/OOD/HW5Final/HW5_UPDATED/src/edu/cs3500/spreadsheets/view/testresult.txt");
     String incell = null;
-    String view = null;
+    String view = "graphic";
     for (int i = 0; i < args.length; i++) {
       switch (args[i]) {
         case("-in"):
@@ -69,7 +65,7 @@ public class BeyondGood {
       throw new IllegalArgumentException("bro give us some inputs to work with");
     }
 
-    createSpreadSheet(infile, incell, view);
+    createSpreadSheet(infile, incell, view, outfile);
   }
 
     /**
@@ -78,7 +74,7 @@ public class BeyondGood {
    * @param cell cell.
    * @throws FileNotFoundException
    */
-  private static void createSpreadSheet(File file, String cell, String type) throws FileNotFoundException {
+  private static void createSpreadSheet(File file, String cell, String type, File saveTo) throws FileNotFoundException {
     Builder b = new Builder();
     BufferedReader reader;
     try {
@@ -103,15 +99,19 @@ public class BeyondGood {
     Spreadsheet s = WorksheetReader.read(BasicWorksheet.defaultBuilder(), fileReader);
     Map<Coord, Cell> board = s.getCurrSpreadSheet();
 
-    IView v = createView("graphic", s);
+    b.createWorksheet();
+
+    IView v = createView(type, saveTo, s);
     v.display();
-    System.out.println(s.getCurrSpreadSheet().get(new Coord(4,1)).getEvaluatedData());
   }
 
-  public static IView createView(String type, Spreadsheet s) {
+  public static IView createView(String type, File saveTo, Spreadsheet s) {
     switch (type) {
-      case("text"): return new TextView(s.getCurrSpreadSheet(), 5, 5);
-      case("graphic"): return new GraphicsView(s.getCurrSpreadSheet(), 800, 800);
+      case("text"):
+        TextView createView = new TextView(s.getCurrSpreadSheet(), 5, 5);
+        createView.saveTo(saveTo.getPath());
+        return createView;
+      case("graphic"): return new GraphicsView(s.getCurrSpreadSheet(),  50, 50);
       default: throw new IllegalArgumentException("This type of view is not supported");
     }
   }
