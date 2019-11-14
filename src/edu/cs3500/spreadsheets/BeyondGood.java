@@ -90,8 +90,6 @@ public class BeyondGood {
         String coordinate = phrase[0];
         String formula = phrase[1];
         int col = Coord.colNameToIndex(String.valueOf(coordinate.charAt(0)));
-
-
         int row = Integer.parseInt(String.valueOf(coordinate.charAt(1)));
         b.createCell(col, row, formula);
         line = reader.readLine();
@@ -104,12 +102,10 @@ public class BeyondGood {
     FileReader fileReader = new FileReader(file);
     Spreadsheet s = WorksheetReader.read(BasicWorksheet.defaultBuilder(), fileReader);
     Map<Coord, Cell> board = s.getCurrSpreadSheet();
-    System.out.println(board.keySet());
-
-    b.createWorksheet();
 
     IView v = createView("graphic", s);
     v.display();
+    System.out.println(s.getCurrSpreadSheet().get(new Coord(5,2)).getEvaluatedData());
   }
 
   public static IView createView(String type, Spreadsheet s) {

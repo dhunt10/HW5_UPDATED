@@ -1,4 +1,8 @@
-A1 3
+A1 =(SUM (SUM 2 3) (SUM 4 6))
+A2 25
+A3 =(PROD A2 A1)
 B1 4
+B2 7
 C1 9
-D1 12
+D1 =(SUM A1 A2)
+D2 =(SUM A1:B2)

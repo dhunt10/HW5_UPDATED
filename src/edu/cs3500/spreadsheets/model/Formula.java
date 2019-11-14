@@ -1,6 +1,7 @@
 package edu.cs3500.spreadsheets.model;
 
 import edu.cs3500.spreadsheets.model.values.Value;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,12 +14,12 @@ public interface Formula {
    * @return a String representation of a formula.
    */
   @Override
-  public String toString();
+  String toString();
 
   /**
    * This evaluates a given cell's formula and returns the final value.
    * @param mapOfCells this map will be used in the event that a cell contains a reference.
    * @return a final value to be added as part of the cell's evaluated content.
    */
-  Value evaluate(Map<Coord, Cell> mapOfCells);
+  Value evaluate(Map<Coord, Cell> mapOfCells, String formula);
 }
